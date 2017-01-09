@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
 
-namespace Biziday.Windows.ViewModels
+namespace Biziday.UWP.ViewModels
 {
     public class ViewModelBase: Screen
     {

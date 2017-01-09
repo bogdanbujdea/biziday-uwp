@@ -1,4 +1,4 @@
-﻿namespace Biziday.Windows.Models
+﻿namespace Biziday.UWP.Models
 {
     public class NewsItem
     {

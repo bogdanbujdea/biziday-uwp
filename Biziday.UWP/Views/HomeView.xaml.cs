@@ -1,5 +1,6 @@
-﻿
-namespace Biziday.Windows.Views
+﻿using Biziday.UWP.ViewModels;
+
+namespace Biziday.UWP.Views
 {
     public sealed partial class HomeView
     {
@@ -7,5 +8,7 @@ namespace Biziday.Windows.Views
         {
             InitializeComponent();
         }
+
+        public HomeViewModel ViewModel => DataContext as HomeViewModel;
     }
 }

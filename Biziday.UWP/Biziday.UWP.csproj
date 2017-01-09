@@ -7,8 +7,8 @@
     <ProjectGuid>{788381EF-524B-43A5-9760-B3D2C5343A06}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Biziday.Windows</RootNamespace>
-    <AssemblyName>Biziday.Windows</AssemblyName>
+    <RootNamespace>Biziday.UWP</RootNamespace>
+    <AssemblyName>Biziday.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
@@ -95,11 +95,24 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Communication\ApiEndpoints.cs" />
+    <Compile Include="Communication\IRestClient.cs" />
+    <Compile Include="Communication\RestClient.cs" />
     <Compile Include="Models\NewsItem.cs" />
+    <Compile Include="Models\NewsResponse.cs" />
+    <Compile Include="Models\Response.cs" />
+    <Compile Include="News\INewsRetriever.cs" />
+    <Compile Include="News\NewsRetriever.cs" />
+    <Compile Include="News\RegisterResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\SettingsRepository.cs" />
+    <Compile Include="Repositories\ISettingsRepository.cs" />
+    <Compile Include="Repositories\SettingsKey.cs" />
+    <Compile Include="Validation\Reports\Operation\BasicReport.cs" />
+    <Compile Include="Validation\Reports\Operation\ValidationReport.cs" />
+    <Compile Include="Validation\Reports\Web\BasicWebReport.cs" />
+    <Compile Include="Validation\Reports\Web\RequestStatus.cs" />
+    <Compile Include="Validation\Reports\Web\WebDataReport.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\HomeView.xaml.cs">
@@ -127,10 +140,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\HomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

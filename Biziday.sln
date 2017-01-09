@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biziday.Windows", "Biziday.Windows\Biziday.Windows.csproj", "{788381EF-524B-43A5-9760-B3D2C5343A06}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biziday.UWP", "Biziday.UWP\Biziday.UWP.csproj", "{788381EF-524B-43A5-9760-B3D2C5343A06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,5 +42,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = d717f399-1b2d-474e-b592-59216c743d02
 	EndGlobalSection
 EndGlobal
