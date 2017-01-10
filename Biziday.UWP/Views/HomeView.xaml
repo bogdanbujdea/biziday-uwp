@@ -7,43 +7,47 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:viewModels="using:Biziday.UWP.ViewModels"
     xmlns:models="using:Biziday.UWP.Models"
+    xmlns:micro="using:Caliburn.Micro"
     mc:Ignorable="d"
+    x:Name="HomePage"
     d:DataContext="{d:DesignInstance viewModels:HomeViewModel}">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <controls:MasterDetailsView Foreground="Black"
-                                    ItemsSource="{Binding NewsItems, Mode=TwoWay}" 
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Background="#0F3B5C">
+            <TextBlock HorizontalAlignment="Center" FontSize="30" Text="BIZIDAY" Foreground="White" FontWeight="SemiBold"></TextBlock>
+        </Grid>
+        <controls:MasterDetailsView x:Name="DetailsView" Foreground="Black" Background="#EFEFEF" Grid.Row="1" Margin="0 0"
+                                    ItemsSource="{Binding NewsItems, Mode=TwoWay}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
                                     NoSelectionContent="Select an item to view">
+            <controls:MasterDetailsView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </controls:MasterDetailsView.ItemContainerStyle>
             <controls:MasterDetailsView.ItemTemplate>
-                <DataTemplate >
-                    <StackPanel Margin="0,8">
-                        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
-                                   Text="{Binding Body}" />
-                    </StackPanel>
+                <DataTemplate>
+                    <Grid x:Name="TextGrid">
+                        <Border Background="White" Width="{Binding ElementName=TextGrid, Path=Width, Mode=TwoWay}" Padding="5" Margin="5" CornerRadius="5">
+                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" FontSize="16" Text="{Binding Body}" />
+                        </Border>
+                    </Grid>
                 </DataTemplate>
             </controls:MasterDetailsView.ItemTemplate>
             <controls:MasterDetailsView.DetailsTemplate>
                 <DataTemplate x:DataType="models:NewsItem">
                     <Grid>
-                        <WebView Source="{Binding Link}"></WebView>
+                        <WebView Source="{Binding Link}" micro:Message.Attach="[Event NavigationStarting]=[Action LoadingPage];[Event NavigationCompleted]=[Action PageLoaded]"></WebView>
+                        <ProgressRing IsActive="{Binding ViewModel.PageIsLoading, ElementName=HomePage}" Height="150"></ProgressRing>
                     </Grid>
                 </DataTemplate>
             </controls:MasterDetailsView.DetailsTemplate>
             <controls:MasterDetailsView.NoSelectionContentTemplate>
                 <DataTemplate>
-                    <StackPanel HorizontalAlignment="Center"
-                                VerticalAlignment="Center">
-                        <SymbolIcon RenderTransformOrigin=".5,.5"
-                                    Symbol="Mail">
-                            <SymbolIcon.RenderTransform>
-                                <CompositeTransform ScaleX="2"
-                                                    ScaleY="2" />
-                            </SymbolIcon.RenderTransform>
-                        </SymbolIcon>
-                        <TextBlock Margin="0,12"
-                                   FontSize="24"
-                                   Text="{Binding}" />
-                    </StackPanel>
+                    <Grid Background="#0F3B5C"></Grid>
                 </DataTemplate>
             </controls:MasterDetailsView.NoSelectionContentTemplate>
 

@@ -8,6 +8,7 @@ namespace Biziday.UWP.ViewModels
     {
         private readonly INewsRetriever _newsRetriever;
         private ObservableCollection<NewsItem> _newsItems;
+        private bool _pageIsLoading;
 
         public HomeViewModel(INewsRetriever newsRetriever)
         {
@@ -35,6 +36,27 @@ namespace Biziday.UWP.ViewModels
                 _newsItems = value;
                 NotifyOfPropertyChange(() => NewsItems);
             }
+        }
+
+        public bool PageIsLoading
+        {
+            get { return _pageIsLoading; }
+            set
+            {
+                if (value == _pageIsLoading) return;
+                _pageIsLoading = value;
+                NotifyOfPropertyChange(() => PageIsLoading);
+            }
+        }
+
+        public void LoadingPage()
+        {
+            PageIsLoading = true;
+        }
+
+        public void PageLoaded()
+        {
+            PageIsLoading = false;
         }
     }
 }
