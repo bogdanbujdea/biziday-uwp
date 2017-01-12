@@ -2,7 +2,7 @@
 using Biziday.UWP.Models;
 using Newtonsoft.Json;
 
-namespace Biziday.UWP.News
+namespace Biziday.UWP.Modules.News.Models
 {
     public class RegisterResult
     {

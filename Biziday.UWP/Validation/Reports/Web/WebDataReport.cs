@@ -2,6 +2,16 @@ namespace Biziday.UWP.Validation.Reports.Web
 {
     public class WebDataReport<T> : BasicWebReport
     {
-        public T Content { get; set; }
+        private T _content;
+
+        public T Content
+        {
+            get { return _content; }
+            set
+            {
+                IsSuccessful = true;
+                _content = value;
+            }
+        }
     }
 }

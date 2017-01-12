@@ -2,11 +2,12 @@
 using System.Threading.Tasks;
 using Biziday.UWP.Communication;
 using Biziday.UWP.Modules.App;
+using Biziday.UWP.Modules.News.Models;
 using Biziday.UWP.Repositories;
 using Biziday.UWP.Validation.Reports.Web;
 using Newtonsoft.Json;
 
-namespace Biziday.UWP.News
+namespace Biziday.UWP.Modules.News.Services
 {
     public class NewsRetriever : INewsRetriever
     {
@@ -61,14 +62,7 @@ namespace Biziday.UWP.News
             {
                 var registerResult = JsonConvert.DeserializeObject<RegisterResult>(webReport.StringResponse);
                 _settingsRepository.SetData(SettingsKey.UserId, registerResult.UserId);
-                //var areas = await _restClient.PostAsync(ApiEndpoints.GetAreasUrl);
             }
-        }
-
-        
-    }
-
-    public class NewsReport
-    {
+        }       
     }
 }

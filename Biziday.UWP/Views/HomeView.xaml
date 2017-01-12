@@ -9,6 +9,7 @@
     xmlns:models="using:Biziday.UWP.Models"
     xmlns:micro="using:Caliburn.Micro"
     mc:Ignorable="d"
+    NavigationCacheMode="Enabled"
     x:Name="HomePage"
     d:DataContext="{d:DesignInstance viewModels:HomeViewModel}">
 
@@ -20,7 +21,11 @@
         <Grid Background="#0F3B5C">
             <TextBlock HorizontalAlignment="Center" FontSize="30" Text="BIZIDAY" Foreground="White" FontWeight="SemiBold"></TextBlock>
         </Grid>
-        <StackPanel Grid.Row="1">
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
             <Grid Background="#F3BE3B" Visibility="{Binding LocationIsSelected, Mode=TwoWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}" micro:Message.Attach="[Event Tapped]=[Action SelectLocation]">
                 <StackPanel Orientation="Horizontal">
                     <Image Source="../Assets/pin.png" Height="30" Margin="10" HorizontalAlignment="Left"></Image>
@@ -31,7 +36,7 @@
                     </HyperlinkButton>
                 </StackPanel>
             </Grid>
-            <controls:MasterDetailsView x:Name="DetailsView" Foreground="Black" Background="#EFEFEF" Margin="0 0"
+            <controls:MasterDetailsView x:Name="DetailsView" Grid.Row="1" Foreground="Black" Background="#EFEFEF" Margin="0 0"
                                     ItemsSource="{Binding NewsItems, Mode=TwoWay}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
                                     NoSelectionContent="Select an item to view">
                 <controls:MasterDetailsView.ItemContainerStyle>
@@ -62,6 +67,6 @@
                     </DataTemplate>
                 </controls:MasterDetailsView.NoSelectionContentTemplate>
             </controls:MasterDetailsView>
-        </StackPanel>
+        </Grid>
     </Grid>
 </Page>

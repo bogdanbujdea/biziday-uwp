@@ -5,7 +5,11 @@
     xmlns:local="using:Biziday.UWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:controls="using:Biziday.UWP.Modules.App.Controls"
+    xmlns:micro="using:Caliburn.Micro"
+    xmlns:viewModels="using:Biziday.UWP.ViewModels"
+    mc:Ignorable="d"
+    d:DesignSource="{d:DesignInstance viewModels:LocationViewModel}">
 
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -25,15 +29,17 @@
                 <RowDefinition Height="65"></RowDefinition>
             </Grid.RowDefinitions>
             <TextBlock Margin="0 0" FontSize="22" Text="Alege judetul din care o sa primesti stiri locale" VerticalAlignment="Center"></TextBlock>
-            <ComboBox Grid.Row="1" Header="Judetul" SelectedIndex="0">
-                <ComboBoxItem>Cluj</ComboBoxItem>
-                <ComboBoxItem>Iasi</ComboBoxItem>
-                <ComboBoxItem>Bucuresti</ComboBoxItem>
-            </ComboBox>
+            <controls:ExtendedComboBox x:Name="Areas" Grid.Row="1" Header="Judetul" PlaceholderText="Selecteaza" MinWidth="350" >
+                <controls:ExtendedComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding AreaName}"></TextBlock>
+                    </DataTemplate>
+                </controls:ExtendedComboBox.ItemTemplate>
+            </controls:ExtendedComboBox>
             <TextBlock Grid.Row="2" FontSize="22" Margin="0 0"  Grid.Column="0" Text="Pentru utilizatorii din afara Romaniei" VerticalAlignment="Center"></TextBlock>
-            <RadioButton Grid.Row="3" GroupName="Areas" Content="Republica Moldova"></RadioButton>
-            <RadioButton Grid.Row="4" GroupName="Areas" Content="Alta tara europeana"></RadioButton>
-            <RadioButton Grid.Row="5" GroupName="Areas" Content="Pe alt continent decat Europa"></RadioButton>
+            <RadioButton Grid.Row="3" micro:Message.Attach="[Event Checked]=[Action SelectMoldova]" IsChecked="{Binding MoldovaIsChecked, Mode=TwoWay}" GroupName="Areas" Content="Republica Moldova"></RadioButton>
+            <RadioButton Grid.Row="4" GroupName="Areas" micro:Message.Attach="[Event Checked]=[Action SelectEurope]" IsChecked="{Binding EuropeIsChecked, Mode=TwoWay}" Content="Alta tara europeana"></RadioButton>
+            <RadioButton Grid.Row="5" GroupName="Areas" micro:Message.Attach="[Event Checked]=[Action SelectOtherContinent]" IsChecked="{Binding OtherIsChecked, Mode=TwoWay}" Content="Pe alt continent decat Europa"></RadioButton>
         </Grid>
     </Grid>
 </Page>

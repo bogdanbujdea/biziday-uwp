@@ -4,7 +4,8 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml.Controls;
 using Biziday.UWP.Communication;
 using Biziday.UWP.Modules.App;
-using Biziday.UWP.News;
+using Biziday.UWP.Modules.App.Navigation;
+using Biziday.UWP.Modules.News.Services;
 using Biziday.UWP.Repositories;
 using Biziday.UWP.ViewModels;
 using Biziday.UWP.Views;
@@ -19,6 +20,12 @@ namespace Biziday.UWP
         public App()
         {
             InitializeComponent();
+            UnhandledException += AppUnhandledException;
+        }
+
+        private void AppUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
         }
 
         protected override void Configure()
@@ -30,6 +37,8 @@ namespace Biziday.UWP
             _container.RegisterPerRequest(typeof(IRestClient), "IRestClient", typeof(RestClient));
             _container.RegisterPerRequest(typeof(INewsRetriever), "INewsRetriever", typeof(NewsRetriever));
             _container.RegisterPerRequest(typeof(IAppStateManager), "IAppStateManager", typeof(AppStateManager));
+            _container.RegisterPerRequest(typeof(INewsClassifier), "INewsClassifier", typeof(NewsClassifier));
+            _container.RegisterPerRequest(typeof(IPageNavigationService), "IPageNavigationService", typeof(PageNavigationService));
             _container.PerRequest<HomeViewModel>();
             _container.PerRequest<LocationViewModel>();
         }
@@ -41,7 +50,7 @@ namespace Biziday.UWP
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            DisplayRootView<LocationView>();
+            DisplayRootView<HomeView>();
         }
 
         protected override object GetInstance(Type service, string key)
