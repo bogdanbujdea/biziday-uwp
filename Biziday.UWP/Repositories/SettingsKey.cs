@@ -2,6 +2,7 @@
 {
     public enum SettingsKey
     {
-        UserId
+        UserId,
+        LocationIsSelected
     }
 }

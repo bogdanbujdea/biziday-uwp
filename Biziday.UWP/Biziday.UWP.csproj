@@ -101,6 +101,11 @@
     <Compile Include="Models\NewsItem.cs" />
     <Compile Include="Models\NewsResponse.cs" />
     <Compile Include="Models\Response.cs" />
+    <Compile Include="Modules\App\AppStateManager.cs" />
+    <Compile Include="Modules\App\Converters\ReversedBooleanToVisibilityConverter.cs" />
+    <Compile Include="Modules\App\Navigation\IPageNavigationService.cs" />
+    <Compile Include="Modules\App\Navigation\NavigationKey.cs" />
+    <Compile Include="Modules\App\Navigation\PageNavigationService.cs" />
     <Compile Include="News\INewsRetriever.cs" />
     <Compile Include="News\NewsRetriever.cs" />
     <Compile Include="News\RegisterResult.cs" />
@@ -114,9 +119,16 @@
     <Compile Include="Validation\Reports\Web\RequestStatus.cs" />
     <Compile Include="Validation\Reports\Web\WebDataReport.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
+    <Compile Include="ViewModels\LocationViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LocationView.xaml.cs">
+      <DependentUpon>LocationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -126,6 +138,7 @@
     <None Include="Biziday.Windows_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\pin.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -141,6 +154,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Views\HomeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LocationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

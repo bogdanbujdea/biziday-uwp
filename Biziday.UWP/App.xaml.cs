@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml.Controls;
 using Biziday.UWP.Communication;
+using Biziday.UWP.Modules.App;
 using Biziday.UWP.News;
 using Biziday.UWP.Repositories;
 using Biziday.UWP.ViewModels;
@@ -28,7 +29,9 @@ namespace Biziday.UWP
             _container.RegisterPerRequest(typeof(ISettingsRepository), "ISettingsRepository", typeof(SettingsRepository));
             _container.RegisterPerRequest(typeof(IRestClient), "IRestClient", typeof(RestClient));
             _container.RegisterPerRequest(typeof(INewsRetriever), "INewsRetriever", typeof(NewsRetriever));
+            _container.RegisterPerRequest(typeof(IAppStateManager), "IAppStateManager", typeof(AppStateManager));
             _container.PerRequest<HomeViewModel>();
+            _container.PerRequest<LocationViewModel>();
         }
 
         protected override void PrepareViewFirst(Frame rootFrame)
@@ -38,7 +41,7 @@ namespace Biziday.UWP
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            DisplayRootView<HomeView>();
+            DisplayRootView<LocationView>();
         }
 
         protected override object GetInstance(Type service, string key)

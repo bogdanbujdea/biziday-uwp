@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Biziday.UWP.Communication;
+using Biziday.UWP.Modules.App;
 using Biziday.UWP.Repositories;
-using Biziday.UWP.Validation.Reports.Operation;
 using Biziday.UWP.Validation.Reports.Web;
 using Newtonsoft.Json;
 
@@ -12,16 +12,18 @@ namespace Biziday.UWP.News
     {
         private readonly ISettingsRepository _settingsRepository;
         private readonly IRestClient _restClient;
+        private readonly IAppStateManager _appStateManager;
 
-        public NewsRetriever(ISettingsRepository settingsRepository, IRestClient restClient)
+        public NewsRetriever(ISettingsRepository settingsRepository, IRestClient restClient, IAppStateManager appStateManager)
         {
             _settingsRepository = settingsRepository;
             _restClient = restClient;
+            _appStateManager = appStateManager;
         }
 
         public async Task<WebDataReport<NewsInfo>> RetrieveNews()
         {
-            if (FirstTimeUse())
+            if (_appStateManager.FirstTimeUse())
             {
                 await RegisterUser();
             }
@@ -63,11 +65,7 @@ namespace Biziday.UWP.News
             }
         }
 
-        private bool FirstTimeUse()
-        {
-            var userId = _settingsRepository.GetData<int>(SettingsKey.UserId);
-            return userId == 0;
-        }
+        
     }
 
     public class NewsReport
