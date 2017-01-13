@@ -38,54 +38,57 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid Background="#0F3B5C">
-            <TextBlock x:Name="AppName" HorizontalAlignment="Center" FontSize="30" Text="BIZIDAY" Foreground="White" FontWeight="SemiBold"></TextBlock>
-        </Grid>
-        <Grid Grid.Row="1">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid Background="#F3BE3B" Visibility="{Binding LocationIsSelected, Mode=TwoWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}" micro:Message.Attach="[Event Tapped]=[Action SelectLocation]">
-                <Image x:Name="LocationPinImage" Source="../Assets/pin.png" Height="35" Margin="15 0" HorizontalAlignment="Left"></Image>
-                <TextBlock x:Name="LocationText" Text="Aplicatia iti va aduce si stiri de interes local. Alege-ti orasul!" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"></TextBlock>
+            <Grid Background="#0F3B5C">
+                <TextBlock x:Name="AppName" HorizontalAlignment="Center" FontSize="30" Text="BIZIDAY" Foreground="White" FontWeight="SemiBold"></TextBlock>
             </Grid>
-            <controls:MasterDetailsView x:Name="DetailsView" Grid.Row="1" Foreground="Black" Background="#EFEFEF" Margin="0 0"
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid Background="#F3BE3B" Visibility="{Binding LocationIsSelected, Mode=TwoWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}" micro:Message.Attach="[Event Tapped]=[Action SelectLocation]">
+                    <Image x:Name="LocationPinImage" Source="../Assets/pin.png" Height="35" Margin="15 0" HorizontalAlignment="Left"></Image>
+                    <TextBlock x:Name="LocationText" Text="Aplicatia iti va aduce si stiri de interes local. Alege-ti orasul!" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"></TextBlock>
+                </Grid>
+                <controls:MasterDetailsView x:Name="DetailsView" Grid.Row="1" Foreground="Black" Background="#EFEFEF" Margin="0 0"
                                     ItemsSource="{Binding NewsItems, Mode=TwoWay}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
                                     NoSelectionContent="Select an item to view">
-                <controls:MasterDetailsView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </controls:MasterDetailsView.ItemContainerStyle>
-                <controls:MasterDetailsView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid x:Name="TextGrid">
-                            <Border Background="White" Width="{Binding ElementName=TextGrid, Path=Width, Mode=TwoWay}" Padding="5" Margin="5" CornerRadius="5">
-                                <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" FontSize="18" Text="{Binding Body}" />
-                            </Border>
-                        </Grid>
-                    </DataTemplate>
-                </controls:MasterDetailsView.ItemTemplate>
-                <controls:MasterDetailsView.DetailsTemplate>
-                    <DataTemplate x:DataType="models:NewsItem">
-                        <Grid>
-                            <WebView x:Name="Browser" Source="{Binding Link}" micro:Message.Attach="[Event NavigationStarting]=[Action LoadingPage];[Event DOMContentLoaded]=[Action PageLoaded]"></WebView>
-                            <Grid x:Name="LoadingGrid" Background="White" Visibility="{Binding ViewModel.PageIsLoading, ElementName=HomePage, Converter={StaticResource BooleanToVisibilityConverter}}"></Grid>
-                            <ProgressRing IsActive="{Binding ViewModel.PageIsLoading, ElementName=HomePage}" Height="150"></ProgressRing>
-                        </Grid>
-                    </DataTemplate>
-                </controls:MasterDetailsView.DetailsTemplate>
-                <controls:MasterDetailsView.NoSelectionContentTemplate>
-                    <DataTemplate>
-                        <Grid Background="#EFEFEF"></Grid>
-                    </DataTemplate>
-                </controls:MasterDetailsView.NoSelectionContentTemplate>
-            </controls:MasterDetailsView>
+                    <controls:MasterDetailsView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </controls:MasterDetailsView.ItemContainerStyle>
+                    <controls:MasterDetailsView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid x:Name="TextGrid">
+                                <Border Background="White" Width="{Binding ElementName=TextGrid, Path=Width, Mode=TwoWay}" Padding="5" Margin="5" CornerRadius="5">
+                                    <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" FontSize="18" Text="{Binding Body}" />
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </controls:MasterDetailsView.ItemTemplate>
+                    <controls:MasterDetailsView.DetailsTemplate>
+                        <DataTemplate x:DataType="models:NewsItem">
+                            <Grid>
+                                <WebView x:Name="Browser" Source="{Binding Link}" micro:Message.Attach="[Event NavigationStarting]=[Action LoadingPage];[Event DOMContentLoaded]=[Action PageLoaded]"></WebView>
+                                <Grid x:Name="LoadingGrid" Background="White" Visibility="{Binding ViewModel.PageIsLoading, ElementName=HomePage, Converter={StaticResource BooleanToVisibilityConverter}}"></Grid>
+                                <ProgressRing IsActive="{Binding ViewModel.PageIsLoading, ElementName=HomePage}" Height="150"></ProgressRing>
+                            </Grid>
+                        </DataTemplate>
+                    </controls:MasterDetailsView.DetailsTemplate>
+                    <controls:MasterDetailsView.NoSelectionContentTemplate>
+                        <DataTemplate>
+                            <Grid Background="#EFEFEF"></Grid>
+                        </DataTemplate>
+                    </controls:MasterDetailsView.NoSelectionContentTemplate>
+                </controls:MasterDetailsView>
+            </Grid>
         </Grid>
+        <ProgressRing IsActive="{Binding IsBusy, Mode=TwoWay}" Foreground="#0F3B5C" Width="60" Height="60"></ProgressRing>
     </Grid>
 </Page>

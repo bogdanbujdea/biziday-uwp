@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.Storage.Streams;
+using Windows.Web;
 using Windows.Web.Http;
 using Biziday.UWP.Validation.Reports.Web;
 using Newtonsoft.Json;
@@ -32,36 +33,48 @@ namespace Biziday.UWP.Communication
 
             return httpReport;
         }
-/*
-        private void AddAuthentication()
-        {
-            _httpClient.DefaultRequestHeaders.Remove("Authentication");
-            var token = _appSettings.Get<string>(StorageKey.LoginToken);
-            _httpClient.DefaultRequestHeaders.Add("Authentication", token);
-        }*/
-
-        public async Task<BasicWebReport> RegisterAsync(object model, string url, bool useAuthenticatation = false, bool serialize = true)
-        {
-            var pairs = new List<KeyValuePair<string, string>>
-            {
-                new KeyValuePair<string, string>("deviceType", "Android tablet")
-            };
-
-            var content = new HttpFormUrlEncodedContent(pairs);
-            
-            var responseMessage = await _httpClient.PostAsync(new Uri(url), content);
-
-            var httpReport = await CreateHttpReport(responseMessage);
-            return httpReport;
-        }
 
         public async Task<BasicWebReport> PostAsync(string url, List<KeyValuePair<string, string>> formData)
         {
-            var content = new HttpFormUrlEncodedContent(formData);
+            BasicWebReport httpReport = new BasicWebReport();
+            try
+            {
+                var content = new HttpFormUrlEncodedContent(formData);
 
-            var responseMessage = await _httpClient.PostAsync(new Uri(url), content);
+                var responseMessage = await _httpClient.PostAsync(new Uri(url), content);
+                httpReport = await CreateHttpReport(responseMessage);
+            }
+            catch (Exception exception)
+            {
+                httpReport.ErrorMessage = GetErrorMessageFromWebException(exception);
+            }
+            return httpReport;
+        }
 
-            var httpReport = await CreateHttpReport(responseMessage);
+        private string GetErrorMessageFromWebException(Exception exception)
+        {
+            var webErrorStatus = WebError.GetStatus(exception.HResult);
+            if (webErrorStatus == WebErrorStatus.CannotConnect)
+                return "Va rugam verificati conexiunea la internet.";
+            return exception.Message;
+        }
+
+        public async Task<BasicWebReport> PostJsonAsync(object content, string url)
+        {
+            BasicWebReport httpReport = new BasicWebReport();
+            try
+            {
+                var json = JsonConvert.SerializeObject(content, Formatting.None, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+                var httpStringContent = new HttpStringContent(json, UnicodeEncoding.Utf8, "application/json");
+                var responseMessage = await _httpClient.PostAsync(new Uri(url), httpStringContent);
+
+                httpReport = await CreateHttpReport(responseMessage);
+                return httpReport;
+            }
+            catch (Exception exception)
+            {
+                httpReport.ErrorMessage = GetErrorMessageFromWebException(exception);
+            }
             return httpReport;
         }
 
@@ -70,12 +83,17 @@ namespace Biziday.UWP.Communication
             var httpReport = new BasicWebReport
             {
                 HttpCode = responseMessage.StatusCode,
-                StringResponse = await responseMessage.Content.ReadAsStringAsync(),
-                IsSuccessful = responseMessage.IsSuccessStatusCode
+                StringResponse = await responseMessage.Content.ReadAsStringAsync()
             };
             try
             {
                 httpReport.RequestStatus = JsonConvert.DeserializeObject<RequestStatus>(httpReport.StringResponse);
+                if (httpReport.RequestStatus != null)
+                {
+                    httpReport.IsSuccessful = httpReport.RequestStatus.Status == 0;
+                    if (httpReport.IsSuccessful == false)
+                        httpReport.ErrorMessage = httpReport.RequestStatus.ErrorMessage;
+                }
             }
             catch (Exception exception)
             {

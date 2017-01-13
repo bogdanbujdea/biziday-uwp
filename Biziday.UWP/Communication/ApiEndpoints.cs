@@ -9,5 +9,7 @@
         public const string GetAreasUrl = WebBaseUrl + "/getAllAreas";
 
         public const string GetNewsUrl = WebBaseUrl + "/getNews";
+
+        public const string SelectAreaURL = WebBaseUrl + "/configureAreas";
     }
 }

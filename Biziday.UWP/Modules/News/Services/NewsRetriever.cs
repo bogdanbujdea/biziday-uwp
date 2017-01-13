@@ -34,11 +34,7 @@ namespace Biziday.UWP.Modules.News.Services
         private async Task<WebDataReport<NewsInfo>> GetNews(int page)
         {
             var report = new WebDataReport<NewsInfo>();
-            var pairs = new List<KeyValuePair<string, string>>();
-            pairs.Add(new KeyValuePair<string, string>("userId", _settingsRepository.GetData<int>(SettingsKey.UserId).ToString()));
-            pairs.Add(new KeyValuePair<string, string>("last_order_date", 0.ToString()));
-            pairs.Add(new KeyValuePair<string, string>("current_page", page.ToString()));
-            pairs.Add(new KeyValuePair<string, string>("per_page", "30"));
+            var pairs = CreateNewsPaginationInfo(page);
 
             var webReport = await _restClient.PostAsync(ApiEndpoints.GetNewsUrl, pairs);
             if (webReport.IsSuccessful)
@@ -55,9 +51,24 @@ namespace Biziday.UWP.Modules.News.Services
 
         }
 
+        private List<KeyValuePair<string, string>> CreateNewsPaginationInfo(int page)
+        {
+            var pairs = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("userId",
+                    _settingsRepository.GetData<int>(SettingsKey.UserId).ToString()),
+                new KeyValuePair<string, string>("last_order_date", 0.ToString()),
+                new KeyValuePair<string, string>("current_page", page.ToString()),
+                new KeyValuePair<string, string>("per_page", "30")
+            };
+            return pairs;
+        }
+
         private async Task RegisterUser()
         {
-            var webReport = await _restClient.RegisterAsync("deviceType=Windows%20tablet", ApiEndpoints.RegisterUrl, serialize: false);
+            var registrationData = new List<KeyValuePair<string, string>>();
+            registrationData.Add(new KeyValuePair<string, string>("deviceType", "Windows tablet"));
+            var webReport = await _restClient.PostAsync(ApiEndpoints.RegisterUrl, registrationData);
             if (webReport.IsSuccessful)
             {
                 var registerResult = JsonConvert.DeserializeObject<RegisterResult>(webReport.StringResponse);

@@ -10,5 +10,7 @@ namespace Biziday.UWP.Modules.News.Services
         List<int> SpecialAreas { get; }
 
         Task<WebDataReport<List<Area>>> RetrieveAreas();
+
+        Task<BasicWebReport> SelectArea(int areaId);
     }
 }

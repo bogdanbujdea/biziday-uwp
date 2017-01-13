@@ -8,7 +8,7 @@ namespace Biziday.UWP.Communication
     {
         Task<BasicWebReport> GetAsync(string url, bool useAuthenticatation = false);
 
-        Task<BasicWebReport> RegisterAsync(object model, string url, bool useAuthenticatation = false, bool serialize = true);
         Task<BasicWebReport> PostAsync(string url, List<KeyValuePair<string, string>> formData);
+        Task<BasicWebReport> PostJsonAsync(object content, string url);
     }
 }

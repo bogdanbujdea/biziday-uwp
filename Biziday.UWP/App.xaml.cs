@@ -4,6 +4,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml.Controls;
 using Biziday.UWP.Communication;
 using Biziday.UWP.Modules.App;
+using Biziday.UWP.Modules.App.Dialogs;
 using Biziday.UWP.Modules.App.Navigation;
 using Biziday.UWP.Modules.News.Services;
 using Biziday.UWP.Repositories;
@@ -39,6 +40,7 @@ namespace Biziday.UWP
             _container.RegisterPerRequest(typeof(IAppStateManager), "IAppStateManager", typeof(AppStateManager));
             _container.RegisterPerRequest(typeof(INewsClassifier), "INewsClassifier", typeof(NewsClassifier));
             _container.RegisterPerRequest(typeof(IPageNavigationService), "IPageNavigationService", typeof(PageNavigationService));
+            _container.RegisterPerRequest(typeof(IUserNotificationService), "IUserNotificationService", typeof(UserNotificationService));
             _container.PerRequest<HomeViewModel>();
             _container.PerRequest<LocationViewModel>();
         }

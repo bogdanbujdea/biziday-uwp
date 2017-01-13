@@ -1,4 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
+using Biziday.UWP.Modules.App.Dialogs;
 using Biziday.UWP.Modules.News.Models;
 using Biziday.UWP.Modules.News.Services;
 using Biziday.UWP.Repositories;
@@ -9,25 +12,40 @@ namespace Biziday.UWP.ViewModels
     {
         private readonly ISettingsRepository _settingsRepository;
         private readonly INewsClassifier _newsClassifier;
+        private readonly IUserNotificationService _userNotificationService;
         private ObservableCollection<Area> _areas;
         private Area _selectedArea;
         private bool _moldovaIsChecked;
         private bool _europeIsChecked;
         private bool _otherIsChecked;
 
-        public LocationViewModel(ISettingsRepository settingsRepository, INewsClassifier newsClassifier)
+        public LocationViewModel(ISettingsRepository settingsRepository, INewsClassifier newsClassifier, IUserNotificationService userNotificationService)
         {
             _settingsRepository = settingsRepository;
             _newsClassifier = newsClassifier;
+            _userNotificationService = userNotificationService;
         }
 
         protected override async void OnActivate()
         {
             base.OnActivate();
-            var areasReport = await _newsClassifier.RetrieveAreas();
-            if (areasReport.IsSuccessful)
+            try
             {
-                Areas = new ObservableCollection<Area>(areasReport.Content);
+                StartWebRequest();
+                var areasReport = await _newsClassifier.RetrieveAreas();
+                if (areasReport.IsSuccessful)
+                {
+                    Areas = new ObservableCollection<Area>(areasReport.Content);
+                }
+                else await _userNotificationService.ShowErrorMessageDialogAsync(areasReport.ErrorMessage);
+            }
+            catch (Exception)
+            {
+
+            }
+            finally
+            {
+                EndWebRequest();
             }
         }
 
@@ -41,11 +59,12 @@ namespace Biziday.UWP.ViewModels
                 if (Equals(value, _selectedArea)) return;
                 if (value != null)
                 {
-                    MoldovaIsChecked = false;
-                    EuropeIsChecked = false;
-                    OtherIsChecked = false;
+                    SelectState(value);
                 }
-                _selectedArea = value;
+                else
+                {
+                    _selectedArea = null;
+                }
                 NotifyOfPropertyChange(() => SelectedArea);
             }
         }
@@ -96,22 +115,69 @@ namespace Biziday.UWP.ViewModels
 
         #endregion
 
-        public void SelectMoldova()
+        private async void SelectState(Area area)
         {
-            MoldovaIsChecked = true;
-            SelectedArea = null;
+            if (await ChangeLocation(area.Id))
+            {
+                _selectedArea = area;
+                MoldovaIsChecked = false;
+                EuropeIsChecked = false;
+                OtherIsChecked = false;
+            }
         }
 
-        public void SelectEurope()
+        private async Task<bool> ChangeLocation(int areaId)
         {
-            EuropeIsChecked = true;
-            SelectedArea = null;
+            try
+            {
+                StartWebRequest();
+                var report = await _newsClassifier.SelectArea(areaId);
+                if (report.IsSuccessful == false)
+                {
+                    await _userNotificationService.ShowErrorMessageDialogAsync(report.ErrorMessage);
+                }
+                return report.IsSuccessful;
+            }
+            finally
+            {
+                EndWebRequest();
+            }
         }
 
-        public void SelectOtherContinent()
+        public async Task SelectMoldova()
         {
-            OtherIsChecked = true;
-            SelectedArea = null;
+            if (await ChangeLocation(NewsClassifier.AreaMoldova))
+            {
+                MoldovaIsChecked = true;
+                SelectedArea = null;
+            }
+            else MoldovaIsChecked = false;
         }
+
+        public async Task SelectEurope()
+        {
+            if (await ChangeLocation(NewsClassifier.AreaExternEurope))
+            {
+                EuropeIsChecked = true;
+                SelectedArea = null;
+            }
+            else EuropeIsChecked = false;
+        }
+
+        public async Task SelectOtherContinent()
+        {
+            if (await ChangeLocation(NewsClassifier.AreaOtherContinent))
+            {
+                OtherIsChecked = true;
+                SelectedArea = null;
+            }
+            else OtherIsChecked = false;
+        }
+    }
+
+    internal enum RequestState
+    {
+        InProgress,
+        Finished
     }
 }
