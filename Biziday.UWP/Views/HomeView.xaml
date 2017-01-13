@@ -14,12 +14,36 @@
     d:DataContext="{d:DesignInstance viewModels:HomeViewModel}">
 
     <Grid Background="Transparent">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="WidthStates">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger x:Name="LowestWidthTrigger"
+                                         MinWindowWidth="300"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="AppName.FontSize" Value="30"></Setter>
+                        <Setter Target="LocationText.Width" Value="300"></Setter>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NormalWidth">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger x:Name="NormalWidthTrigger"
+                                         MinWindowWidth="700"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="AppName.FontSize" Value="32"></Setter>
+                        <Setter Target="LocationText.MaxWidth" Value="700"></Setter>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Background="#0F3B5C">
-            <TextBlock HorizontalAlignment="Center" FontSize="30" Text="BIZIDAY" Foreground="White" FontWeight="SemiBold"></TextBlock>
+            <TextBlock x:Name="AppName" HorizontalAlignment="Center" FontSize="30" Text="BIZIDAY" Foreground="White" FontWeight="SemiBold"></TextBlock>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -27,14 +51,8 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid Background="#F3BE3B" Visibility="{Binding LocationIsSelected, Mode=TwoWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}" micro:Message.Attach="[Event Tapped]=[Action SelectLocation]">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="../Assets/pin.png" Height="30" Margin="10" HorizontalAlignment="Left"></Image>
-                    <HyperlinkButton VerticalAlignment="Center">
-                        <HyperlinkButton.Content>
-                            <TextBlock Text="Aplicatia iti va aduce si stiri de interes local. Alege-ti orasul!" VerticalAlignment="Center" FontSize="16"></TextBlock>
-                        </HyperlinkButton.Content>
-                    </HyperlinkButton>
-                </StackPanel>
+                <Image x:Name="LocationPinImage" Source="../Assets/pin.png" Height="35" Margin="15 0" HorizontalAlignment="Left"></Image>
+                <TextBlock x:Name="LocationText" Text="Aplicatia iti va aduce si stiri de interes local. Alege-ti orasul!" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"></TextBlock>
             </Grid>
             <controls:MasterDetailsView x:Name="DetailsView" Grid.Row="1" Foreground="Black" Background="#EFEFEF" Margin="0 0"
                                     ItemsSource="{Binding NewsItems, Mode=TwoWay}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
