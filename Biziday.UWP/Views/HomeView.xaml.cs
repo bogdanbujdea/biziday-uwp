@@ -9,13 +9,13 @@ namespace Biziday.UWP.Views
         public HomeView()
         {
             InitializeComponent();
-            Loaded += HomeView_Loaded;            
+            Loaded += ViewLoaded;            
         }
 
-        private void HomeView_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void ViewLoaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
-            if (ViewModel.LocationIsSelected == true)
+            if (ViewModel.LocationIsSelected)
             {
                 Grid.SetRowSpan(DetailsView, 2);
                 Grid.SetRow(DetailsView, 0);
