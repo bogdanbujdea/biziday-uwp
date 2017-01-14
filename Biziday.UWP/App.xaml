@@ -9,6 +9,8 @@
         <ResourceDictionary>
             <micro:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <converters:ReversedBooleanToVisibilityConverter x:Key="ReversedBooleanToVisibilityConverter" />
+            <converters:UrlToWebsiteNameConverter x:Key="UrlToWebsiteNameConverter" />
+            <converters:TimestampToDateConverter x:Key="TimestampToDateConverter" />
         </ResourceDictionary>
     </micro:CaliburnApplication.Resources>
 </micro:CaliburnApplication>

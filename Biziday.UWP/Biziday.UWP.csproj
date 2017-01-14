@@ -104,6 +104,8 @@
     <Compile Include="Modules\App\AppStateManager.cs" />
     <Compile Include="Modules\App\Controls\ExtendedComboBox.cs" />
     <Compile Include="Modules\App\Converters\ReversedBooleanToVisibilityConverter.cs" />
+    <Compile Include="Modules\App\Converters\TimestampToDateConverter.cs" />
+    <Compile Include="Modules\App\Converters\UrlToWebsiteNameConverter.cs" />
     <Compile Include="Modules\App\Dialogs\IUserNotificationService.cs" />
     <Compile Include="Modules\App\Dialogs\Option.cs" />
     <Compile Include="Modules\App\Dialogs\UserNotificationService.cs" />

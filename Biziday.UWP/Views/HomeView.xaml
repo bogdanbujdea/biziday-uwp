@@ -67,7 +67,15 @@
                         <DataTemplate>
                             <Grid x:Name="TextGrid">
                                 <Border Background="White" Width="{Binding ElementName=TextGrid, Path=Width, Mode=TwoWay}" Padding="5" Margin="5" CornerRadius="5">
-                                    <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" FontSize="18" Text="{Binding Body}" />
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                            <RowDefinition Height="15"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" TextWrapping="Wrap" FontSize="18" Text="{Binding Body}" />
+                                        <TextBlock Grid.Row="1" Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="Gray" TextWrapping="Wrap" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="12" Text="{Binding Link, Converter={StaticResource UrlToWebsiteNameConverter}}" />
+                                        <TextBlock Grid.Row="1" Style="{ThemeResource SubtitleTextBlockStyle}" Foreground="Gray" TextWrapping="Wrap" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="12" Text="{Binding PublishedOn, Converter={StaticResource TimestampToDateConverter}}" />
+                                    </Grid>
                                 </Border>
                             </Grid>
                         </DataTemplate>
