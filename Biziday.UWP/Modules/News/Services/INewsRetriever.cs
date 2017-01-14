@@ -8,7 +8,7 @@ namespace Biziday.UWP.Modules.News.Services
 {
     public interface INewsRetriever
     {
-        Task<WebDataReport<NewsInfo>> RetrieveNews();
+        Task<WebDataReport<NewsInfo>> RetrieveNews(int page);
 
         Task LoadMoreItemsAsync(ICollection<NewsItem> collection, uint suggestLoadCount);
         void Refresh();

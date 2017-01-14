@@ -14,7 +14,7 @@
     d:DataContext="{d:DesignInstance viewModels:HomeViewModel}">
     
     <Page.BottomAppBar>
-        <CommandBar>
+        <CommandBar ClosedDisplayMode="Minimal">
             <CommandBar.Content>
                 <Grid/>
             </CommandBar.Content>
@@ -24,7 +24,7 @@
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
-    <Grid Background="Transparent">
+    <Grid Background="Transparent" Margin="0 0 0 25">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState x:Name="WidthStates">
@@ -34,7 +34,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="AppName.FontSize" Value="30"></Setter>
-                        <Setter Target="LocationText.Width" Value="300"></Setter>
+                        <Setter Target="LocationText.Width" Value="250"></Setter>
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="NormalWidth">
@@ -54,7 +54,7 @@
                 <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid Background="#0F3B5C">
+            <Grid Background="{StaticResource BizidayBlue}">
                 <TextBlock x:Name="AppName" HorizontalAlignment="Center" FontSize="30" Text="BIZIDAY" Foreground="White" FontWeight="SemiBold"></TextBlock>
             </Grid>
             <Grid Grid.Row="1">
@@ -64,7 +64,7 @@
                 </Grid.RowDefinitions>
                 <Grid Background="#F3BE3B" Visibility="{Binding LocationIsSelected, Mode=TwoWay, Converter={StaticResource ReversedBooleanToVisibilityConverter}}" micro:Message.Attach="[Event Tapped]=[Action SelectLocation]">
                     <Image x:Name="LocationPinImage" Source="../Assets/pin.png" Height="35" Margin="15 0" HorizontalAlignment="Left"></Image>
-                    <TextBlock x:Name="LocationText" Text="Aplicatia iti va aduce si stiri de interes local. Alege-ti orasul!" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"></TextBlock>
+                    <TextBlock x:Name="LocationText" Text="Aplicatia iti va aduce si stiri de interes local. Alege-ti orasul!" Margin="15 0" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"></TextBlock>
                 </Grid>
                 <controls:MasterDetailsView x:Name="DetailsView" Grid.Row="1" Foreground="Black" Background="#EFEFEF" Margin="0 0"
                                     ItemsSource="{Binding NewsItems, Mode=TwoWay}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
@@ -108,6 +108,6 @@
                 </controls:MasterDetailsView>
             </Grid>
         </Grid>
-        <ProgressRing IsActive="{Binding IsBusy, Mode=TwoWay}" Foreground="#0F3B5C" Width="60" Height="60"></ProgressRing>
+        <ProgressRing IsActive="{Binding IsBusy, Mode=TwoWay}" Foreground="{StaticResource BizidayBlue}" Width="60" Height="60"></ProgressRing>
     </Grid>
 </Page>

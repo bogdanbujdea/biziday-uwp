@@ -11,6 +11,7 @@
             <converters:ReversedBooleanToVisibilityConverter x:Key="ReversedBooleanToVisibilityConverter" />
             <converters:UrlToWebsiteNameConverter x:Key="UrlToWebsiteNameConverter" />
             <converters:TimestampToDateConverter x:Key="TimestampToDateConverter" />
+            <SolidColorBrush x:Key="BizidayBlue" Color="#0F3B5C" />
         </ResourceDictionary>
     </micro:CaliburnApplication.Resources>
 </micro:CaliburnApplication>

@@ -12,37 +12,39 @@
     d:DataContext="{d:DesignData viewModels:LocationViewModel}">
 
     <Grid Background="White">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid Background="#0F3B5C">
-                <TextBlock HorizontalAlignment="Center" FontSize="30" Text="BIZIDAY" Foreground="White" FontWeight="SemiBold"></TextBlock>
-            </Grid>
-            <Grid Grid.Row="1" Margin="30 10">
+        <ScrollViewer>
+            <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="65"></RowDefinition>
-                    <RowDefinition Height="65"></RowDefinition>
-                    <RowDefinition Height="65"></RowDefinition>
-                    <RowDefinition Height="65"></RowDefinition>
-                    <RowDefinition Height="65"></RowDefinition>
-                    <RowDefinition Height="65"></RowDefinition>
+                    <RowDefinition Height="50"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock Margin="0 0" FontSize="14" Text="Alege judetul din care o sa primesti stiri locale" VerticalAlignment="Center"></TextBlock>
-                <controls:ExtendedComboBox x:Name="Areas" Grid.Row="1" Header="Judetul" PlaceholderText="Selecteaza" MinWidth="250" >
-                    <controls:ExtendedComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding AreaName}"></TextBlock>
-                        </DataTemplate>
-                    </controls:ExtendedComboBox.ItemTemplate>
-                </controls:ExtendedComboBox>
-                <TextBlock Grid.Row="2" FontSize="14" Margin="0 0"  Grid.Column="0" Text="Pentru utilizatorii din afara Romaniei" VerticalAlignment="Center"></TextBlock>
-                <RadioButton Grid.Row="3" micro:Message.Attach="[Event Checked]=[Action SelectMoldova]" IsChecked="{Binding MoldovaIsChecked, Mode=TwoWay}" GroupName="Areas" Content="Republica Moldova"></RadioButton>
-                <RadioButton Grid.Row="4" GroupName="Areas" micro:Message.Attach="[Event Checked]=[Action SelectEurope]" IsChecked="{Binding EuropeIsChecked, Mode=TwoWay}" Content="Alta tara europeana"></RadioButton>
-                <RadioButton Grid.Row="5" GroupName="Areas" micro:Message.Attach="[Event Checked]=[Action SelectOtherContinent]" IsChecked="{Binding OtherIsChecked, Mode=TwoWay}" Content="Pe alt continent decat Europa"></RadioButton>
+                <Grid Background="{StaticResource BizidayBlue}">
+                    <TextBlock HorizontalAlignment="Center" FontSize="30" Text="BIZIDAY" Foreground="White" FontWeight="SemiBold"></TextBlock>
+                </Grid>
+                <Grid Grid.Row="1" Margin="30 10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="65"></RowDefinition>
+                        <RowDefinition Height="65"></RowDefinition>
+                        <RowDefinition Height="65"></RowDefinition>
+                        <RowDefinition Height="65"></RowDefinition>
+                        <RowDefinition Height="65"></RowDefinition>
+                        <RowDefinition Height="65"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Margin="0 0" FontSize="14" Text="Alege judetul din care o sa primesti stiri locale" VerticalAlignment="Center"></TextBlock>
+                    <controls:ExtendedComboBox x:Name="Areas" Grid.Row="1" Header="Judetul" PlaceholderText="Selecteaza" MinWidth="250" >
+                        <controls:ExtendedComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding AreaName}"></TextBlock>
+                            </DataTemplate>
+                        </controls:ExtendedComboBox.ItemTemplate>
+                    </controls:ExtendedComboBox>
+                    <TextBlock Grid.Row="2" FontSize="14" Margin="0 0"  Grid.Column="0" Text="Pentru utilizatorii din afara Romaniei" VerticalAlignment="Center"></TextBlock>
+                    <RadioButton Grid.Row="3" micro:Message.Attach="[Event Checked]=[Action SelectMoldova]" IsChecked="{Binding MoldovaIsChecked, Mode=TwoWay}" GroupName="Areas" Content="Republica Moldova"></RadioButton>
+                    <RadioButton Grid.Row="4" GroupName="Areas" micro:Message.Attach="[Event Checked]=[Action SelectEurope]" IsChecked="{Binding EuropeIsChecked, Mode=TwoWay}" Content="Alta tara europeana"></RadioButton>
+                    <RadioButton Grid.Row="5" GroupName="Areas" micro:Message.Attach="[Event Checked]=[Action SelectOtherContinent]" IsChecked="{Binding OtherIsChecked, Mode=TwoWay}" Content="Pe alt continent decat Europa"></RadioButton>
+                </Grid>
             </Grid>
-        </Grid>
-        <ProgressRing IsActive="{Binding IsBusy, Mode=TwoWay}" Foreground="#0F3B5C" Width="60" Height="60"></ProgressRing>
+        </ScrollViewer>
+        <ProgressRing IsActive="{Binding IsBusy, Mode=TwoWay}" Foreground="{StaticResource BizidayBlue}" Width="60" Height="60"></ProgressRing>
     </Grid>
 </Page>

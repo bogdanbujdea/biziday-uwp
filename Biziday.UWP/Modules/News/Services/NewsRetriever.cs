@@ -33,13 +33,13 @@ namespace Biziday.UWP.Modules.News.Services
             };
         }
 
-        public async Task<WebDataReport<NewsInfo>> RetrieveNews()
+        public async Task<WebDataReport<NewsInfo>> RetrieveNews(int page)
         {
             if (_appStateManager.FirstTimeUse())
             {
                 await RegisterUser();
             }
-            return await GetNews(1);
+            return await GetNews(page);
         }
 
         private async Task<WebDataReport<NewsInfo>> GetNews(int page)

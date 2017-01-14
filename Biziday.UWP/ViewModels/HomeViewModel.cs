@@ -28,14 +28,15 @@ namespace Biziday.UWP.ViewModels
             _userNotificationService = userNotificationService;
         }
 
-        protected override void OnActivate()
+        protected override async void OnActivate()
         {
             base.OnActivate();
             try
             {
                 StartWebRequest();
-                NewsItems = new IncrementalLoadingCollection<NewsItem, NewsRetriever>(_newsRetriever as NewsRetriever);
                 LocationIsSelected = _appStateManager.LocationIsSelected();                
+                await _newsRetriever.RetrieveNews(1);
+                NewsItems = new IncrementalLoadingCollection<NewsItem, NewsRetriever>(_newsRetriever as NewsRetriever);
             }
             catch (Exception)
             {
