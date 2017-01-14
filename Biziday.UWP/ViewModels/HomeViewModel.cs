@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Email;
+using Windows.System;
 using Biziday.UWP.Models;
 using Biziday.UWP.Modules.App;
 using Biziday.UWP.Modules.App.Dialogs;
@@ -34,8 +37,14 @@ namespace Biziday.UWP.ViewModels
             try
             {
                 StartWebRequest();
-                LocationIsSelected = _appStateManager.LocationIsSelected();                
-                await _newsRetriever.RetrieveNews(1);
+                if (_appStateManager.FirstTimeUse())
+                {
+                    LocationIsSelected = false;
+                    await _userNotificationService.ShowMessageDialogAsync("Disclaimer: Aceasta nu este aplicatia oficiala Biziday pentru platforma Windows.");
+                    await _newsRetriever.RetrieveNews(1);
+                }
+                else
+                    LocationIsSelected = _appStateManager.LocationIsSelected();
                 NewsItems = new IncrementalLoadingCollection<NewsItem, NewsRetriever>(_newsRetriever as NewsRetriever);
             }
             catch (Exception)
@@ -57,6 +66,18 @@ namespace Biziday.UWP.ViewModels
                 _newsItems = value;
                 NotifyOfPropertyChange(() => NewsItems);
             }
+        }
+
+        public async Task SetRating()
+        {
+            await Launcher.LaunchUriAsync(new Uri(string.Format("ms-windows-store:REVIEW?PFN={0}", Windows.ApplicationModel.Package.Current.Id.FamilyName)));
+        }
+
+        public async Task SendFeedback()
+        {
+            var emailMessage = new EmailMessage {Subject = "Feedback Biziday"};
+            emailMessage.To.Add(new EmailRecipient("bogdan@thewindev.net"));
+            await EmailManager.ShowComposeNewEmailAsync(emailMessage);
         }
 
         public void RefreshNews()

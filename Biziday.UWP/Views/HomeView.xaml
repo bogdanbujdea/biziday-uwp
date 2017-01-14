@@ -19,8 +19,10 @@
                 <Grid/>
             </CommandBar.Content>
             <AppBarButton Icon="Refresh" Label="Refresh" micro:Message.Attach="[Event Click]=[Action RefreshNews]"/>
+            <AppBarButton Name="Location" Icon="Map" Label="Alege zona geografica" micro:Message.Attach="[Event Click]=[Action SelectLocation]"/>
             <CommandBar.SecondaryCommands>
-                <AppBarButton Name="Location" Icon="Map" Label="Alege zona geografica" micro:Message.Attach="[Event Click]=[Action SelectLocation]"/>
+                <AppBarButton Name="Rating" Label="Ofera un rating" micro:Message.Attach="[Event Click]=[Action SetRating]"/>
+                <AppBarButton Name="Feedback" Label="Ofera feedback" micro:Message.Attach="[Event Click]=[Action SendFeedback]"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
