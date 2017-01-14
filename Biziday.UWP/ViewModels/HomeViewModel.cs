@@ -58,6 +58,12 @@ namespace Biziday.UWP.ViewModels
             }
         }
 
+        public void RefreshNews()
+        {
+            _newsRetriever.Refresh();
+            NewsItems = new IncrementalLoadingCollection<NewsItem, NewsRetriever>(_newsRetriever as NewsRetriever);
+        }
+
         public bool PageIsLoading
         {
             get { return _pageIsLoading; }

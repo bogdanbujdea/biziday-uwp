@@ -116,5 +116,14 @@ namespace Biziday.UWP.Modules.News.Services
                 }
             }
         }
+
+        public void Refresh()
+        {
+            _paginationInfo = new NewsPaginationInfo
+            {
+                PerPage = 30,
+                CurrentPage = 0
+            };            
+        }
     }
 }

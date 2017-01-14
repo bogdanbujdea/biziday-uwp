@@ -11,5 +11,6 @@ namespace Biziday.UWP.Modules.News.Services
         Task<WebDataReport<NewsInfo>> RetrieveNews();
 
         Task LoadMoreItemsAsync(ICollection<NewsItem> collection, uint suggestLoadCount);
+        void Refresh();
     }
 }

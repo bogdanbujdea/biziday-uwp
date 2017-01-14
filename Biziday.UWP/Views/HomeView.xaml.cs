@@ -1,4 +1,5 @@
 ﻿using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Biziday.UWP.ViewModels;
 
@@ -23,5 +24,10 @@ namespace Biziday.UWP.Views
         }
 
         public HomeViewModel ViewModel => DataContext as HomeViewModel;
+
+        private void SelectLocation(object sender, RoutedEventArgs e)
+        {
+            ViewModel.SelectLocation();
+        }
     }
 }

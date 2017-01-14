@@ -12,7 +12,18 @@
     NavigationCacheMode="Enabled"
     x:Name="HomePage"
     d:DataContext="{d:DesignInstance viewModels:HomeViewModel}">
-
+    
+    <Page.BottomAppBar>
+        <CommandBar>
+            <CommandBar.Content>
+                <Grid/>
+            </CommandBar.Content>
+            <AppBarButton Icon="Refresh" Label="Refresh" micro:Message.Attach="[Event Click]=[Action RefreshNews]"/>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Name="Location" Icon="Map" Label="Alege zona geografica" micro:Message.Attach="[Event Click]=[Action SelectLocation]"/>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
     <Grid Background="Transparent">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="VisualStateGroup">

@@ -123,6 +123,7 @@ namespace Biziday.UWP.ViewModels
                 MoldovaIsChecked = false;
                 EuropeIsChecked = false;
                 OtherIsChecked = false;
+                _settingsRepository.SetData(SettingsKey.LocationIsSelected, true);
             }
         }
 
