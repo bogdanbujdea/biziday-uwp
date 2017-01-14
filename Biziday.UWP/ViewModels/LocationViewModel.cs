@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Biziday.UWP.Modules.App.Dialogs;
 using Biziday.UWP.Modules.News.Models;
@@ -38,6 +39,7 @@ namespace Biziday.UWP.ViewModels
                     Areas = new ObservableCollection<Area>(areasReport.Content);
                 }
                 else await _userNotificationService.ShowErrorMessageDialogAsync(areasReport.ErrorMessage);
+                SetPreviousChoice();
             }
             catch (Exception)
             {
@@ -46,6 +48,28 @@ namespace Biziday.UWP.ViewModels
             finally
             {
                 EndWebRequest();
+            }
+        }
+
+        private void SetPreviousChoice()
+        {
+            var areaId = _settingsRepository.GetData<int>(SettingsKey.AreaId);
+            if (areaId != 0)
+            {
+                var state = Areas.FirstOrDefault(a => a.Id == areaId);
+                if (state != null)
+                {
+                    SelectedArea = state;
+                }
+                else
+                {
+                    if (areaId == NewsClassifier.AreaMoldova)
+                        MoldovaIsChecked = true;
+                    else if (areaId == NewsClassifier.AreaExternEurope)
+                        EuropeIsChecked = true;
+                    else if (areaId == NewsClassifier.AreaOtherContinent)
+                        OtherIsChecked = true;
+                }
             }
         }
 
@@ -123,7 +147,8 @@ namespace Biziday.UWP.ViewModels
                 MoldovaIsChecked = false;
                 EuropeIsChecked = false;
                 OtherIsChecked = false;
-                _settingsRepository.SetData(SettingsKey.LocationIsSelected, true);
+                _settingsRepository.SetData(SettingsKey.AreaId, area.Id);
+                NotifyOfPropertyChange(() => SelectedArea);
             }
         }
 
@@ -136,6 +161,10 @@ namespace Biziday.UWP.ViewModels
                 if (report.IsSuccessful == false)
                 {
                     await _userNotificationService.ShowErrorMessageDialogAsync(report.ErrorMessage);
+                }
+                else
+                {
+                    _settingsRepository.SetData(SettingsKey.AreaId, areaId);
                 }
                 return report.IsSuccessful;
             }

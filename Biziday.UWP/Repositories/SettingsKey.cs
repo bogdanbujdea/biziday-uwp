@@ -3,6 +3,6 @@
     public enum SettingsKey
     {
         UserId,
-        LocationIsSelected
+        AreaId
     }
 }

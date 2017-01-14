@@ -26,7 +26,7 @@ namespace Biziday.UWP.Modules.App
 
         public bool LocationIsSelected()
         {
-            return _settingsRepository.GetData<bool>(SettingsKey.LocationIsSelected);
+            return _settingsRepository.GetData<int>(SettingsKey.AreaId) != 0;
         }
     }
 }
