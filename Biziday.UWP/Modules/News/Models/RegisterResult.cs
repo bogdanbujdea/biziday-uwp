@@ -26,6 +26,8 @@ namespace Biziday.UWP.Modules.News.Models
         public int From { get; set; }
         public int To { get; set; }
         public IEnumerable<NewsItem> Data { get; set; }
-        public int LastOrderDate { get; set; }
+
+        [JsonProperty(PropertyName = "last_order_date")]
+        public int? LastOrderDate { get; set; }
     }
 }

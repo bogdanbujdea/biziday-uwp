@@ -15,7 +15,7 @@ namespace Biziday.UWP.ViewModels
         private readonly IAppStateManager _appStateManager;
         private readonly IPageNavigationService _pageNavigationService;
         private readonly IUserNotificationService _userNotificationService;
-        private ObservableCollection<NewsItem> _newsItems;
+        private IncrementalLoadingCollection<NewsItem, NewsRetriever> _newsItems;
         private bool _pageIsLoading;
         private bool _locationIsSelected;
 
@@ -28,20 +28,14 @@ namespace Biziday.UWP.ViewModels
             _userNotificationService = userNotificationService;
         }
 
-        protected override async void OnActivate()
+        protected override void OnActivate()
         {
             base.OnActivate();
             try
             {
                 StartWebRequest();
-                await Task.Delay(14000);
-                LocationIsSelected = _appStateManager.LocationIsSelected();
-                var report = await _newsRetriever.RetrieveNews();
-                if (report.IsSuccessful)
-                {
-                    NewsItems = new ObservableCollection<NewsItem>(report.Content.Data);
-                }
-                else await _userNotificationService.ShowErrorMessageDialogAsync(report.ErrorMessage);
+                NewsItems = new IncrementalLoadingCollection<NewsItem, NewsRetriever>(_newsRetriever as NewsRetriever);
+                LocationIsSelected = _appStateManager.LocationIsSelected();                
             }
             catch (Exception)
             {
@@ -53,7 +47,7 @@ namespace Biziday.UWP.ViewModels
             }
         }
 
-        public ObservableCollection<NewsItem> NewsItems
+        public IncrementalLoadingCollection<NewsItem, NewsRetriever> NewsItems
         {
             get { return _newsItems; }
             set

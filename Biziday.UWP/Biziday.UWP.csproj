@@ -107,11 +107,15 @@
     <Compile Include="Modules\App\Dialogs\IUserNotificationService.cs" />
     <Compile Include="Modules\App\Dialogs\Option.cs" />
     <Compile Include="Modules\App\Dialogs\UserNotificationService.cs" />
+    <Compile Include="Modules\App\HelperExtensions.cs" />
     <Compile Include="Modules\App\Navigation\IPageNavigationService.cs" />
     <Compile Include="Modules\App\Navigation\NavigationKey.cs" />
     <Compile Include="Modules\App\Navigation\PageNavigationService.cs" />
     <Compile Include="Modules\News\Services\AreaConfiguration.cs" />
+    <Compile Include="Modules\News\Services\IncrementalItemSourceBase.cs" />
+    <Compile Include="Modules\News\Services\IncrementalLoadingCollection.cs" />
     <Compile Include="Modules\News\Services\INewsRetriever.cs" />
+    <Compile Include="Modules\News\Services\NewsPaginationInfo.cs" />
     <Compile Include="Modules\News\Services\NewsRetriever.cs" />
     <Compile Include="Modules\News\Models\RegisterResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

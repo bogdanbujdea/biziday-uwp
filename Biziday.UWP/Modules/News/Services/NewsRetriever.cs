@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Biziday.UWP.Communication;
+using Biziday.UWP.Models;
 using Biziday.UWP.Modules.App;
 using Biziday.UWP.Modules.News.Models;
 using Biziday.UWP.Repositories;
@@ -9,17 +13,24 @@ using Newtonsoft.Json;
 
 namespace Biziday.UWP.Modules.News.Services
 {
-    public class NewsRetriever : INewsRetriever
+    public class NewsRetriever : IncrementalItemSourceBase<NewsItem>, INewsRetriever
     {
         private readonly ISettingsRepository _settingsRepository;
         private readonly IRestClient _restClient;
         private readonly IAppStateManager _appStateManager;
+        private NewsPaginationInfo _paginationInfo;
 
-        public NewsRetriever(ISettingsRepository settingsRepository, IRestClient restClient, IAppStateManager appStateManager)
+        public NewsRetriever(ISettingsRepository settingsRepository, IRestClient restClient,
+            IAppStateManager appStateManager)
         {
             _settingsRepository = settingsRepository;
             _restClient = restClient;
             _appStateManager = appStateManager;
+            _paginationInfo = new NewsPaginationInfo
+            {
+                PerPage = 30,
+                CurrentPage = 0
+            };
         }
 
         public async Task<WebDataReport<NewsInfo>> RetrieveNews()
@@ -34,32 +45,45 @@ namespace Biziday.UWP.Modules.News.Services
         private async Task<WebDataReport<NewsInfo>> GetNews(int page)
         {
             var report = new WebDataReport<NewsInfo>();
-            var pairs = CreateNewsPaginationInfo(page);
 
-            var webReport = await _restClient.PostAsync(ApiEndpoints.GetNewsUrl, pairs);
-            if (webReport.IsSuccessful)
+            try
             {
-                var result = JsonConvert.DeserializeObject<NewsApiResponse>(webReport.StringResponse);
-                report.Content = result.NewsInfo;
-                report.IsSuccessful = true;
+                _paginationInfo.CurrentPage = page;
+                var pairs = CreateNewsPaginationInfo();
+
+                var webReport = await _restClient.PostAsync(ApiEndpoints.GetNewsUrl, pairs);
+                if (webReport.IsSuccessful)
+                {
+                    var result = JsonConvert.DeserializeObject<NewsApiResponse>(webReport.StringResponse);
+                    report.Content = result.NewsInfo;
+                    if (result.NewsInfo.LastOrderDate == 0 || result.NewsInfo.LastOrderDate == null)
+                        RaiseHasMoreItemsChanged(false);
+                    else
+                        _paginationInfo.LastOrderDate = result.NewsInfo.LastOrderDate.GetValueOrDefault();
+                    report.IsSuccessful = true;
+                }
+                else
+                {
+                    report.ErrorMessage = webReport.ErrorMessage;
+                }
             }
-            else
+            catch (Exception exception)
             {
-                report.ErrorMessage = webReport.ErrorMessage;
+                report.ErrorMessage = exception.Message;
             }
             return report;
 
         }
 
-        private List<KeyValuePair<string, string>> CreateNewsPaginationInfo(int page)
+        private List<KeyValuePair<string, string>> CreateNewsPaginationInfo()
         {
             var pairs = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("userId",
                     _settingsRepository.GetData<int>(SettingsKey.UserId).ToString()),
-                new KeyValuePair<string, string>("last_order_date", 0.ToString()),
-                new KeyValuePair<string, string>("current_page", page.ToString()),
-                new KeyValuePair<string, string>("per_page", "30")
+                new KeyValuePair<string, string>("last_order_date", _paginationInfo.LastOrderDate.ToString()),
+                new KeyValuePair<string, string>("current_page", _paginationInfo.CurrentPage.ToString()),
+                new KeyValuePair<string, string>("per_page", _paginationInfo.PerPage.ToString())
             };
             return pairs;
         }
@@ -74,6 +98,23 @@ namespace Biziday.UWP.Modules.News.Services
                 var registerResult = JsonConvert.DeserializeObject<RegisterResult>(webReport.StringResponse);
                 _settingsRepository.SetData(SettingsKey.UserId, registerResult.UserId);
             }
-        }       
+        }
+
+        public override async Task LoadMoreItemsAsync(ICollection<NewsItem> collection, uint suggestLoadCount)
+        {
+            var downloadReport = await GetNews(_paginationInfo.CurrentPage + 1);
+            if (downloadReport.IsSuccessful)
+            {
+                foreach (var newsItem in downloadReport.Content.Data)
+                {
+                    if (collection.Any(c => c.Id == newsItem.Id) == false)
+                        collection.Add(newsItem);
+                    else
+                    {
+                        Debug.WriteLine("already exists: " + newsItem.Body);
+                    }
+                }
+            }
+        }
     }
 }
