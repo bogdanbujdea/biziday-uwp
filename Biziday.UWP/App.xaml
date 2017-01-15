@@ -1,0 +1,17 @@
+﻿<micro:CaliburnApplication
+    x:Class="Biziday.UWP.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:micro="using:Caliburn.Micro"
+    xmlns:converters="using:Biziday.UWP.Modules.App.Converters"
+    RequestedTheme="Light">
+    <micro:CaliburnApplication.Resources>
+        <ResourceDictionary>
+            <micro:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <converters:ReversedBooleanToVisibilityConverter x:Key="ReversedBooleanToVisibilityConverter" />
+            <converters:UrlToWebsiteNameConverter x:Key="UrlToWebsiteNameConverter" />
+            <converters:TimestampToDateConverter x:Key="TimestampToDateConverter" />
+            <SolidColorBrush x:Key="BizidayBlue" Color="#0F3B5C" />
+        </ResourceDictionary>
+    </micro:CaliburnApplication.Resources>
+</micro:CaliburnApplication>
