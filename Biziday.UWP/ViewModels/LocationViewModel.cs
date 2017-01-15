@@ -2,11 +2,13 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Biziday.UWP.Modules.App;
 using Biziday.UWP.Modules.App.Analytics;
 using Biziday.UWP.Modules.App.Dialogs;
 using Biziday.UWP.Modules.News.Models;
 using Biziday.UWP.Modules.News.Services;
 using Biziday.UWP.Repositories;
+using Caliburn.Micro;
 
 namespace Biziday.UWP.ViewModels
 {
@@ -16,19 +18,22 @@ namespace Biziday.UWP.ViewModels
         private readonly INewsClassifier _newsClassifier;
         private readonly IUserNotificationService _userNotificationService;
         private readonly IStatisticsService _statisticsService;
+        private readonly IEventAggregator _eventAggregator;
         private ObservableCollection<Area> _areas;
         private Area _selectedArea;
         private bool _moldovaIsChecked;
         private bool _europeIsChecked;
         private bool _otherIsChecked;
+        private bool _isLoadingPreviousLocation;
 
         public LocationViewModel(ISettingsRepository settingsRepository, INewsClassifier newsClassifier,
-            IUserNotificationService userNotificationService, IStatisticsService statisticsService)
+            IUserNotificationService userNotificationService, IStatisticsService statisticsService, IEventAggregator eventAggregator)
         {
             _settingsRepository = settingsRepository;
             _newsClassifier = newsClassifier;
             _userNotificationService = userNotificationService;
             _statisticsService = statisticsService;
+            _eventAggregator = eventAggregator;
         }
 
         protected override async void OnActivate()
@@ -36,6 +41,7 @@ namespace Biziday.UWP.ViewModels
             base.OnActivate();
             try
             {
+                _isLoadingPreviousLocation = true;
                 StartWebRequest();
                 var areasReport = await _newsClassifier.RetrieveAreas();
                 if (areasReport.IsSuccessful)
@@ -146,6 +152,12 @@ namespace Biziday.UWP.ViewModels
 
         private async void SelectState(Area area)
         {
+            if (_isLoadingPreviousLocation)
+            {
+                _selectedArea = area;
+                _isLoadingPreviousLocation = false;
+                return;
+            }
             if (await ChangeLocation(area.Id))
             {
                 _selectedArea = area;
@@ -170,6 +182,7 @@ namespace Biziday.UWP.ViewModels
                 else
                 {
                     _settingsRepository.SetData(SettingsKey.AreaId, areaId);
+                    _eventAggregator.PublishOnUIThread(new LocationChangedEvent());
                     LogNewLocation(areaId);
                 }
                 return report.IsSuccessful;
@@ -195,6 +208,11 @@ namespace Biziday.UWP.ViewModels
 
         public async Task SelectMoldova()
         {
+            if (_isLoadingPreviousLocation)
+            {
+                _isLoadingPreviousLocation = false;
+                return;
+            }
             if (await ChangeLocation(NewsClassifier.AreaMoldova))
             {
                 MoldovaIsChecked = true;
@@ -205,6 +223,11 @@ namespace Biziday.UWP.ViewModels
 
         public async Task SelectEurope()
         {
+            if (_isLoadingPreviousLocation)
+            {
+                _isLoadingPreviousLocation = false;
+                return;
+            }
             if (await ChangeLocation(NewsClassifier.AreaExternEurope))
             {
                 EuropeIsChecked = true;
@@ -215,6 +238,11 @@ namespace Biziday.UWP.ViewModels
 
         public async Task SelectOtherContinent()
         {
+            if (_isLoadingPreviousLocation)
+            {
+                _isLoadingPreviousLocation = false;
+                return;
+            }
             if (await ChangeLocation(NewsClassifier.AreaOtherContinent))
             {
                 OtherIsChecked = true;

@@ -129,7 +129,8 @@ namespace Biziday.UWP.Modules.News.Services
             _paginationInfo = new NewsPaginationInfo
             {
                 PerPage = 30,
-                CurrentPage = 0
+                CurrentPage = 0,
+                LastOrderDate = 0
             };
         }
     }

@@ -8,10 +8,11 @@ using Biziday.UWP.Modules.App.Analytics;
 using Biziday.UWP.Modules.App.Dialogs;
 using Biziday.UWP.Modules.App.Navigation;
 using Biziday.UWP.Modules.News.Services;
+using Caliburn.Micro;
 
 namespace Biziday.UWP.ViewModels
 {
-    public class HomeViewModel : ViewModelBase
+    public class HomeViewModel : ViewModelBase, IHandle<LocationChangedEvent>
     {
         private readonly INewsRetriever _newsRetriever;
         private readonly IAppStateManager _appStateManager;
@@ -23,25 +24,26 @@ namespace Biziday.UWP.ViewModels
         private bool _locationIsSelected;
 
         public HomeViewModel(INewsRetriever newsRetriever, IAppStateManager appStateManager,
-            IPageNavigationService pageNavigationService, IUserNotificationService userNotificationService, IStatisticsService statisticsService)
+            IPageNavigationService pageNavigationService, IUserNotificationService userNotificationService, IStatisticsService statisticsService, IEventAggregator eventAggregator)
         {
             _newsRetriever = newsRetriever;
             _appStateManager = appStateManager;
             _pageNavigationService = pageNavigationService;
             _userNotificationService = userNotificationService;
             _statisticsService = statisticsService;
+            eventAggregator.Subscribe(this);
         }
 
-        protected override async void OnActivate()
+        protected override async void OnInitialize()
         {
-            base.OnActivate();
+            base.OnInitialize();
             try
             {
                 StartWebRequest();
                 if (_appStateManager.FirstTimeUse())
                 {
                     LocationIsSelected = false;
-                    await _userNotificationService.ShowMessageDialogAsync("Disclaimer: Aceasta nu este aplicatia oficiala Biziday pentru platforma Windows.");
+                    await _userNotificationService.ShowMessageDialogAsync("Disclaimer: Aceasta nu este aplicația oficială Biziday pentru platforma Windows.");
                     await _newsRetriever.RetrieveNews(1);
                 }
                 else
@@ -53,6 +55,12 @@ namespace Biziday.UWP.ViewModels
                 _statisticsService.RegisterPage("news");
                 EndWebRequest();
             }
+        }
+
+        protected override void OnActivate()
+        {
+            base.OnActivate();
+            LocationIsSelected = _appStateManager.LocationIsSelected();
         }
 
         public IncrementalLoadingCollection<NewsItem, NewsRetriever> NewsItems
@@ -123,6 +131,11 @@ namespace Biziday.UWP.ViewModels
         {
             PageIsLoading = false;
             _statisticsService.RegisterEvent(EventCategory.AppEvent, "news", "page_loaded");
+        }
+
+        public void Handle(LocationChangedEvent message)
+        {
+            RefreshNews();
         }
     }
 }
