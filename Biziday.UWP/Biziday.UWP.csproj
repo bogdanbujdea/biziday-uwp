@@ -89,6 +89,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <None Include="analytics.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -101,6 +104,8 @@
     <Compile Include="Models\NewsItem.cs" />
     <Compile Include="Models\NewsResponse.cs" />
     <Compile Include="Models\Response.cs" />
+    <Compile Include="Modules\App\Analytics\IStatisticsService.cs" />
+    <Compile Include="Modules\App\Analytics\StatisticsService.cs" />
     <Compile Include="Modules\App\AppStateManager.cs" />
     <Compile Include="Modules\App\Controls\ExtendedComboBox.cs" />
     <Compile Include="Modules\App\Converters\ReversedBooleanToVisibilityConverter.cs" />
@@ -153,6 +158,7 @@
     <None Include="Biziday.Windows_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="analytics.xml" />
     <Content Include="Assets\NewStoreLogo.scale-100.png" />
     <Content Include="Assets\NewStoreLogo.scale-125.png" />
     <Content Include="Assets\NewStoreLogo.scale-150.png" />

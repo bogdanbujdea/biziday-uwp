@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Biziday.UWP.Communication;
 using Biziday.UWP.Models;
 using Biziday.UWP.Modules.App;
+using Biziday.UWP.Modules.App.Analytics;
 using Biziday.UWP.Modules.News.Models;
 using Biziday.UWP.Repositories;
 using Biziday.UWP.Validation.Reports.Web;
@@ -17,14 +18,16 @@ namespace Biziday.UWP.Modules.News.Services
     {
         private readonly ISettingsRepository _settingsRepository;
         private readonly IRestClient _restClient;
+        private readonly IStatisticsService _statisticsService;
         private readonly IAppStateManager _appStateManager;
         private NewsPaginationInfo _paginationInfo;
 
-        public NewsRetriever(ISettingsRepository settingsRepository, IRestClient restClient,
+        public NewsRetriever(ISettingsRepository settingsRepository, IRestClient restClient, IStatisticsService statisticsService,
             IAppStateManager appStateManager)
         {
             _settingsRepository = settingsRepository;
             _restClient = restClient;
+            _statisticsService = statisticsService;
             _appStateManager = appStateManager;
             _paginationInfo = new NewsPaginationInfo
             {
@@ -57,7 +60,10 @@ namespace Biziday.UWP.Modules.News.Services
                     var result = JsonConvert.DeserializeObject<NewsApiResponse>(webReport.StringResponse);
                     report.Content = result.NewsInfo;
                     if (result.NewsInfo.LastOrderDate == 0 || result.NewsInfo.LastOrderDate == null)
+                    {
                         RaiseHasMoreItemsChanged(false);
+                        _statisticsService.RegisterEvent(EventCategory.AppEvent, "news", "finished_stream");
+                    }
                     else
                         _paginationInfo.LastOrderDate = result.NewsInfo.LastOrderDate.GetValueOrDefault();
                     report.IsSuccessful = true;
@@ -97,6 +103,7 @@ namespace Biziday.UWP.Modules.News.Services
             {
                 var registerResult = JsonConvert.DeserializeObject<RegisterResult>(webReport.StringResponse);
                 _settingsRepository.SetData(SettingsKey.UserId, registerResult.UserId);
+                _statisticsService.RegisterEvent(EventCategory.UserEvent, "registration", registerResult.UserId.ToString());
             }
         }
 
@@ -123,7 +130,7 @@ namespace Biziday.UWP.Modules.News.Services
             {
                 PerPage = 30,
                 CurrentPage = 0
-            };            
+            };
         }
     }
 }

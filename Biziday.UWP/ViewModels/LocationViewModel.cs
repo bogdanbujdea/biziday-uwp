@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Biziday.UWP.Modules.App.Analytics;
 using Biziday.UWP.Modules.App.Dialogs;
 using Biziday.UWP.Modules.News.Models;
 using Biziday.UWP.Modules.News.Services;
@@ -14,17 +15,20 @@ namespace Biziday.UWP.ViewModels
         private readonly ISettingsRepository _settingsRepository;
         private readonly INewsClassifier _newsClassifier;
         private readonly IUserNotificationService _userNotificationService;
+        private readonly IStatisticsService _statisticsService;
         private ObservableCollection<Area> _areas;
         private Area _selectedArea;
         private bool _moldovaIsChecked;
         private bool _europeIsChecked;
         private bool _otherIsChecked;
 
-        public LocationViewModel(ISettingsRepository settingsRepository, INewsClassifier newsClassifier, IUserNotificationService userNotificationService)
+        public LocationViewModel(ISettingsRepository settingsRepository, INewsClassifier newsClassifier,
+            IUserNotificationService userNotificationService, IStatisticsService statisticsService)
         {
             _settingsRepository = settingsRepository;
             _newsClassifier = newsClassifier;
             _userNotificationService = userNotificationService;
+            _statisticsService = statisticsService;
         }
 
         protected override async void OnActivate()
@@ -47,6 +51,7 @@ namespace Biziday.UWP.ViewModels
             }
             finally
             {
+                _statisticsService.RegisterPage("locations");
                 EndWebRequest();
             }
         }
@@ -165,12 +170,26 @@ namespace Biziday.UWP.ViewModels
                 else
                 {
                     _settingsRepository.SetData(SettingsKey.AreaId, areaId);
+                    LogNewLocation(areaId);
                 }
                 return report.IsSuccessful;
             }
             finally
             {
                 EndWebRequest();
+            }
+        }
+
+        private void LogNewLocation(int areaId)
+        {
+            try
+            {
+                var area = Areas.FirstOrDefault(a => a.Id == areaId);
+                _statisticsService.RegisterEvent(EventCategory.UserEvent, "selected_location", area != null ? area.AreaName + " " + areaId : areaId.ToString());
+
+            }
+            catch (Exception)
+            {
             }
         }
 

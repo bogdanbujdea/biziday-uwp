@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Windows.ApplicationModel.Activation;
+using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Biziday.UWP.Communication;
 using Biziday.UWP.Modules.App;
+using Biziday.UWP.Modules.App.Analytics;
 using Biziday.UWP.Modules.App.Dialogs;
 using Biziday.UWP.Modules.App.Navigation;
 using Biziday.UWP.Modules.News.Services;
@@ -24,9 +26,10 @@ namespace Biziday.UWP
             UnhandledException += AppUnhandledException;
         }
 
-        private void AppUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        private async void AppUnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             e.Handled = true;
+            await new MessageDialog("A aparut o eroare, va rugam reincercati " + e.Exception.Message).ShowAsync();
         }
 
         protected override void Configure()
@@ -41,6 +44,7 @@ namespace Biziday.UWP
             _container.RegisterPerRequest(typeof(INewsClassifier), "INewsClassifier", typeof(NewsClassifier));
             _container.RegisterPerRequest(typeof(IPageNavigationService), "IPageNavigationService", typeof(PageNavigationService));
             _container.RegisterPerRequest(typeof(IUserNotificationService), "IUserNotificationService", typeof(UserNotificationService));
+            _container.RegisterPerRequest(typeof(IStatisticsService), "IStatisticsService", typeof(StatisticsService));
             _container.PerRequest<HomeViewModel>();
             _container.PerRequest<LocationViewModel>();
         }
