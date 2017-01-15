@@ -103,49 +103,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Communication\ApiEndpoints.cs" />
-    <Compile Include="Communication\IRestClient.cs" />
-    <Compile Include="Communication\RestClient.cs" />
-    <Compile Include="Models\NewsItem.cs" />
-    <Compile Include="Models\NewsResponse.cs" />
-    <Compile Include="Models\Response.cs" />
-    <Compile Include="Modules\App\Analytics\IStatisticsService.cs" />
-    <Compile Include="Modules\App\Analytics\StatisticsService.cs" />
-    <Compile Include="Modules\App\AppStateManager.cs" />
-    <Compile Include="Modules\App\Controls\ExtendedComboBox.cs" />
-    <Compile Include="Modules\App\Converters\ReversedBooleanToVisibilityConverter.cs" />
-    <Compile Include="Modules\App\Converters\TimestampToDateConverter.cs" />
-    <Compile Include="Modules\App\Converters\UrlToWebsiteNameConverter.cs" />
-    <Compile Include="Modules\App\Dialogs\IUserNotificationService.cs" />
-    <Compile Include="Modules\App\Dialogs\Option.cs" />
-    <Compile Include="Modules\App\Dialogs\UserNotificationService.cs" />
-    <Compile Include="Modules\App\HelperExtensions.cs" />
-    <Compile Include="Modules\App\Navigation\IPageNavigationService.cs" />
-    <Compile Include="Modules\App\Navigation\NavigationKey.cs" />
-    <Compile Include="Modules\App\Navigation\PageNavigationService.cs" />
-    <Compile Include="Modules\News\Services\AreaConfiguration.cs" />
-    <Compile Include="Modules\News\Services\IncrementalItemSourceBase.cs" />
-    <Compile Include="Modules\News\Services\IncrementalLoadingCollection.cs" />
-    <Compile Include="Modules\News\Services\INewsRetriever.cs" />
-    <Compile Include="Modules\News\Services\NewsPaginationInfo.cs" />
-    <Compile Include="Modules\News\Services\NewsRetriever.cs" />
-    <Compile Include="Modules\News\Models\RegisterResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\SettingsRepository.cs" />
-    <Compile Include="Repositories\ISettingsRepository.cs" />
-    <Compile Include="Repositories\SettingsKey.cs" />
-    <Compile Include="Validation\Reports\Operation\BasicReport.cs" />
-    <Compile Include="Validation\Reports\Operation\ValidationReport.cs" />
-    <Compile Include="Validation\Reports\Web\BasicWebReport.cs" />
-    <Compile Include="Validation\Reports\Web\RequestStatus.cs" />
-    <Compile Include="Validation\Reports\Web\WebDataReport.cs" />
-    <Compile Include="Modules\News\Models\Area.cs" />
-    <Compile Include="Modules\News\Models\AreasResponse.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
-    <Compile Include="Modules\News\Services\INewsClassifier.cs" />
-    <Compile Include="Modules\App\LocationChangedEvent.cs" />
     <Compile Include="ViewModels\LocationViewModel.cs" />
-    <Compile Include="Modules\News\Services\NewsClassifier.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\HomeView.xaml.cs">
       <DependentUpon>HomeView.xaml</DependentUpon>
@@ -234,8 +194,12 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="News\" />
+    <ProjectReference Include="..\Biziday.Core\Biziday.Core.csproj">
+      <Project>{7AB1DC18-9F65-4C5F-AAA5-7CAFC2C3FC08}</Project>
+      <Name>Biziday.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

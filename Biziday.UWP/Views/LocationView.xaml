@@ -5,9 +5,9 @@
     xmlns:local="using:Biziday.UWP.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="using:Biziday.UWP.Modules.App.Controls"
     xmlns:micro="using:Caliburn.Micro"
     xmlns:viewModels="using:Biziday.UWP.ViewModels"
+    xmlns:controls="using:Biziday.Core.Modules.App.Controls"
     mc:Ignorable="d"
     d:DataContext="{d:DesignData viewModels:LocationViewModel}">
 
