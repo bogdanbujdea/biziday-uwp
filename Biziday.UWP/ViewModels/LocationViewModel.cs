@@ -2,12 +2,12 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Biziday.UWP.Modules.App;
-using Biziday.UWP.Modules.App.Analytics;
-using Biziday.UWP.Modules.App.Dialogs;
-using Biziday.UWP.Modules.News.Models;
-using Biziday.UWP.Modules.News.Services;
-using Biziday.UWP.Repositories;
+using Biziday.Core.Modules.App;
+using Biziday.Core.Modules.App.Analytics;
+using Biziday.Core.Modules.App.Dialogs;
+using Biziday.Core.Modules.News.Models;
+using Biziday.Core.Modules.News.Services;
+using Biziday.Core.Repositories;
 using Caliburn.Micro;
 
 namespace Biziday.UWP.ViewModels
@@ -82,6 +82,7 @@ namespace Biziday.UWP.ViewModels
                         OtherIsChecked = true;
                 }
             }
+            else _isLoadingPreviousLocation = false;
         }
 
         #region Properties

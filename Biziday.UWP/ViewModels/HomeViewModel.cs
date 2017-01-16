@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Email;
 using Windows.System;
-using Biziday.UWP.Models;
-using Biziday.UWP.Modules.App;
-using Biziday.UWP.Modules.App.Analytics;
-using Biziday.UWP.Modules.App.Dialogs;
-using Biziday.UWP.Modules.App.Navigation;
-using Biziday.UWP.Modules.News.Services;
+using Biziday.Core.Models;
+using Biziday.Core.Modules.App;
+using Biziday.Core.Modules.App.Analytics;
+using Biziday.Core.Modules.App.Dialogs;
+using Biziday.Core.Modules.App.Navigation;
+using Biziday.Core.Modules.News.Services;
 using Caliburn.Micro;
 
 namespace Biziday.UWP.ViewModels
