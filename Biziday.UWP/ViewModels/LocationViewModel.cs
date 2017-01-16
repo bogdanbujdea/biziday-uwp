@@ -82,6 +82,7 @@ namespace Biziday.UWP.ViewModels
                         OtherIsChecked = true;
                 }
             }
+            else _isLoadingPreviousLocation = false;
         }
 
         #region Properties
