@@ -8,6 +8,7 @@ using Biziday.Core.Modules.App.Analytics;
 using Biziday.Core.Modules.App.Dialogs;
 using Biziday.Core.Modules.App.Navigation;
 using Biziday.Core.Modules.News.Services;
+using Biziday.Core.Validation.Reports.Operation;
 using Caliburn.Micro;
 
 namespace Biziday.UWP.ViewModels
@@ -22,6 +23,8 @@ namespace Biziday.UWP.ViewModels
         private IncrementalLoadingCollection<NewsItem, NewsRetriever> _newsItems;
         private bool _pageIsLoading;
         private bool _locationIsSelected;
+        private string _errorMessage;
+        private bool _isErrorVisible;
 
         public HomeViewModel(INewsRetriever newsRetriever, IAppStateManager appStateManager,
             IPageNavigationService pageNavigationService, IUserNotificationService userNotificationService, IStatisticsService statisticsService, IEventAggregator eventAggregator)
@@ -40,6 +43,7 @@ namespace Biziday.UWP.ViewModels
             try
             {
                 StartWebRequest();
+                _newsRetriever.ErrorOccurred += OnFailedToRetrieveNews;
                 if (_appStateManager.FirstTimeUse())
                 {
                     LocationIsSelected = false;
@@ -52,15 +56,21 @@ namespace Biziday.UWP.ViewModels
             }
             finally
             {
-                _statisticsService.RegisterPage("news");
                 EndWebRequest();
             }
+        }
+
+        private void OnFailedToRetrieveNews(object sender, BasicReport e)
+        {
+            ErrorMessage = e.ErrorMessage;
+            IsErrorVisible = true;
         }
 
         protected override void OnActivate()
         {
             base.OnActivate();
             LocationIsSelected = _appStateManager.LocationIsSelected();
+            _statisticsService.RegisterPage("news");
         }
 
         public IncrementalLoadingCollection<NewsItem, NewsRetriever> NewsItems
@@ -92,6 +102,7 @@ namespace Biziday.UWP.ViewModels
         {
             _newsRetriever.Refresh();
             NewsItems = new IncrementalLoadingCollection<NewsItem, NewsRetriever>(_newsRetriever as NewsRetriever);
+            IsErrorVisible = false;
         }
 
         public bool PageIsLoading
@@ -113,6 +124,28 @@ namespace Biziday.UWP.ViewModels
                 if (value == _locationIsSelected) return;
                 _locationIsSelected = value;
                 NotifyOfPropertyChange(() => LocationIsSelected);
+            }
+        }
+
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set
+            {
+                if (value == _errorMessage) return;
+                _errorMessage = value;
+                NotifyOfPropertyChange(() => ErrorMessage);
+            }
+        }
+
+        public bool IsErrorVisible
+        {
+            get { return _isErrorVisible; }
+            set
+            {
+                if (value == _isErrorVisible) return;
+                _isErrorVisible = value;
+                NotifyOfPropertyChange(() => IsErrorVisible);
             }
         }
 

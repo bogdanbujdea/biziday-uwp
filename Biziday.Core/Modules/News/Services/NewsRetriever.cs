@@ -9,6 +9,7 @@ using Biziday.Core.Modules.App;
 using Biziday.Core.Modules.App.Analytics;
 using Biziday.Core.Modules.News.Models;
 using Biziday.Core.Repositories;
+using Biziday.Core.Validation.Reports.Operation;
 using Biziday.Core.Validation.Reports.Web;
 using Newtonsoft.Json;
 
@@ -77,8 +78,9 @@ namespace Biziday.Core.Modules.News.Services
             {
                 report.ErrorMessage = exception.Message;
             }
+            if (report.IsSuccessful == false)
+                OnErrorOccurred(report);
             return report;
-
         }
 
         private List<KeyValuePair<string, string>> CreateNewsPaginationInfo()
@@ -132,6 +134,13 @@ namespace Biziday.Core.Modules.News.Services
                 CurrentPage = 0,
                 LastOrderDate = 0
             };
+        }
+
+        public event EventHandler<BasicReport> ErrorOccurred;
+
+        protected virtual void OnErrorOccurred(BasicReport e)
+        {
+            ErrorOccurred?.Invoke(this, e);
         }
     }
 }

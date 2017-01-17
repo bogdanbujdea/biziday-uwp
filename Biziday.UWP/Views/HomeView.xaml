@@ -12,17 +12,18 @@
     NavigationCacheMode="Enabled"
     x:Name="HomePage"
     d:DataContext="{d:DesignInstance viewModels:HomeViewModel}">
-    
+
     <Page.BottomAppBar>
         <CommandBar ClosedDisplayMode="Minimal">
             <CommandBar.Content>
                 <Grid/>
             </CommandBar.Content>
             <AppBarButton Icon="Refresh" Label="Refresh" micro:Message.Attach="[Event Click]=[Action RefreshNews]"/>
-            <AppBarButton Name="Location" Icon="Map" Label="Alege zona geografica" micro:Message.Attach="[Event Click]=[Action SelectLocation]"/>
+            <AppBarButton Icon="find" Label="Cauta" micro:Message.Attach="[Event Click]=[Action SearchNews]"/>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Name="Rating" Label="Ofera un rating" micro:Message.Attach="[Event Click]=[Action SetRating]"/>
                 <AppBarButton Name="Feedback" Label="Ofera feedback" micro:Message.Attach="[Event Click]=[Action SendFeedback]"/>
+                <AppBarButton Name="Location" Label="Alege zona geografica" micro:Message.Attach="[Event Click]=[Action SelectLocation]"/>
             </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
@@ -69,8 +70,7 @@
                     <TextBlock x:Name="LocationText" Text="Aplicatia iti va aduce si stiri de interes local. Alege-ti orasul!" Margin="15 0" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"></TextBlock>
                 </Grid>
                 <controls:MasterDetailsView x:Name="DetailsView" Grid.Row="1" Foreground="Black" Background="#EFEFEF" Margin="0 0"
-                                    ItemsSource="{Binding NewsItems, Mode=TwoWay}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch"
-                                    NoSelectionContent="Select an item to view">
+                                    ItemsSource="{Binding NewsItems, Mode=TwoWay}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
                     <controls:MasterDetailsView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -104,12 +104,12 @@
                     </controls:MasterDetailsView.DetailsTemplate>
                     <controls:MasterDetailsView.NoSelectionContentTemplate>
                         <DataTemplate>
-                            <Grid Background="#EFEFEF"></Grid>
                         </DataTemplate>
                     </controls:MasterDetailsView.NoSelectionContentTemplate>
                 </controls:MasterDetailsView>
             </Grid>
         </Grid>
+        <TextBlock Margin="0,12" FontSize="20" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding ErrorMessage}" Visibility="{Binding IsErrorVisible, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
         <ProgressRing IsActive="{Binding IsBusy, Mode=TwoWay}" Foreground="{StaticResource BizidayBlue}" Width="60" Height="60"></ProgressRing>
     </Grid>
 </Page>
