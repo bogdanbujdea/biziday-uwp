@@ -44,6 +44,8 @@ namespace Biziday.UWP.ViewModels
             {
                 StartWebRequest();
                 _newsRetriever.ErrorOccurred += OnFailedToRetrieveNews;
+                await _appStateManager.EnableBackgroundTask();
+                return;
                 if (_appStateManager.FirstTimeUse())
                 {
                     LocationIsSelected = false;

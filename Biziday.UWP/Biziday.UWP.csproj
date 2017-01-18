@@ -200,6 +200,10 @@
       <Project>{7AB1DC18-9F65-4C5F-AAA5-7CAFC2C3FC08}</Project>
       <Name>Biziday.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Biziday.Task\Biziday.NewsTask.csproj">
+      <Project>{b0a620e7-4d5c-4b05-a798-ee705912024b}</Project>
+      <Name>Biziday.NewsTask</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
