@@ -79,7 +79,7 @@
                     <controls:MasterDetailsView.ItemTemplate>
                         <DataTemplate>
                             <Grid x:Name="TextGrid">
-                                <Border Background="White" Width="{Binding ElementName=TextGrid, Path=Width, Mode=TwoWay}" Padding="5" Margin="5" CornerRadius="5">
+                                <Border Background="{Binding NewsType, Converter={StaticResource NewsTypeToBackgroundColor}}" Width="{Binding ElementName=TextGrid, Path=Width, Mode=TwoWay}" Padding="5" Margin="5" CornerRadius="5">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*"></RowDefinition>

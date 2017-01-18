@@ -117,6 +117,7 @@
     <Compile Include="Modules\App\Analytics\StatisticsService.cs" />
     <Compile Include="Modules\App\AppStateManager.cs" />
     <Compile Include="Modules\App\Controls\ExtendedComboBox.cs" />
+    <Compile Include="Modules\App\Converters\NewsTypeToBackgroundColor.cs" />
     <Compile Include="Modules\App\Converters\ReversedBooleanToVisibilityConverter.cs" />
     <Compile Include="Modules\App\Converters\TimestampToDateConverter.cs" />
     <Compile Include="Modules\App\Converters\UrlToWebsiteNameConverter.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="Modules\App\Navigation\PageNavigationService.cs" />
     <Compile Include="Modules\News\Models\Area.cs" />
     <Compile Include="Modules\News\Models\AreasResponse.cs" />
+    <Compile Include="Modules\News\Models\NewsType.cs" />
     <Compile Include="Modules\News\Models\RegisterResult.cs" />
     <Compile Include="Modules\News\Services\AreaConfiguration.cs" />
     <Compile Include="Modules\News\Services\IncrementalItemSourceBase.cs" />
