@@ -361,6 +361,14 @@
           "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
         }
       },
+      "NotificationsExtensions.Win10/14332.0.2": {
+        "compile": {
+          "lib/uap10.0/NotificationsExtensions.Win10.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/NotificationsExtensions.Win10.dll": {}
+        }
+      },
       "System.AppContext/4.0.0": {
         "dependencies": {
           "System.Collections": "4.0.0",
@@ -2209,6 +2217,14 @@
           "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
         }
       },
+      "NotificationsExtensions.Win10/14332.0.2": {
+        "compile": {
+          "lib/uap10.0/NotificationsExtensions.Win10.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/NotificationsExtensions.Win10.dll": {}
+        }
+      },
       "runtime.any.System.Private.DataContractSerialization/4.1.0": {
         "dependencies": {
           "System.Collections": "4.0.10",
@@ -3954,6 +3970,14 @@
           "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
         }
       },
+      "NotificationsExtensions.Win10/14332.0.2": {
+        "compile": {
+          "lib/uap10.0/NotificationsExtensions.Win10.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/NotificationsExtensions.Win10.dll": {}
+        }
+      },
       "runtime.aot.System.Private.DataContractSerialization/4.1.0": {
         "dependencies": {
           "System.Collections": "4.0.10",
@@ -5666,6 +5690,14 @@
         },
         "runtime": {
           "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+        }
+      },
+      "NotificationsExtensions.Win10/14332.0.2": {
+        "compile": {
+          "lib/uap10.0/NotificationsExtensions.Win10.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/NotificationsExtensions.Win10.dll": {}
         }
       },
       "runtime.any.System.Private.DataContractSerialization/4.1.0": {
@@ -7416,6 +7448,14 @@
           "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
         }
       },
+      "NotificationsExtensions.Win10/14332.0.2": {
+        "compile": {
+          "lib/uap10.0/NotificationsExtensions.Win10.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/NotificationsExtensions.Win10.dll": {}
+        }
+      },
       "runtime.aot.System.Private.DataContractSerialization/4.1.0": {
         "dependencies": {
           "System.Collections": "4.0.10",
@@ -9128,6 +9168,14 @@
         },
         "runtime": {
           "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+        }
+      },
+      "NotificationsExtensions.Win10/14332.0.2": {
+        "compile": {
+          "lib/uap10.0/NotificationsExtensions.Win10.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/NotificationsExtensions.Win10.dll": {}
         }
       },
       "runtime.any.System.Private.DataContractSerialization/4.1.0": {
@@ -10876,6 +10924,14 @@
         },
         "runtime": {
           "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll": {}
+        }
+      },
+      "NotificationsExtensions.Win10/14332.0.2": {
+        "compile": {
+          "lib/uap10.0/NotificationsExtensions.Win10.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/NotificationsExtensions.Win10.dll": {}
         }
       },
       "runtime.aot.System.Private.DataContractSerialization/4.1.0": {
@@ -13094,6 +13150,29 @@
         "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.dll",
         "lib/portable-net45+wp80+win8+wpa81/Newtonsoft.Json.xml",
         "tools/install.ps1"
+      ]
+    },
+    "NotificationsExtensions.Win10/14332.0.2": {
+      "sha512": "UN5yNMpYIs06ULFSGkNYINN/ZtqK19wt3IbotUvH7rlGPVOcbvNvM2Jzxs9wZAolX97L5/Y4u+6twFP0oeXk2A==",
+      "type": "package",
+      "files": [
+        "NotificationsExtensions.Win10.14332.0.2.nupkg.sha512",
+        "NotificationsExtensions.Win10.nuspec",
+        "build/native/NotificationsExtensions.Win10.targets",
+        "lib/dotnet/NotificationsExtensions.Win10.dll",
+        "lib/dotnet/NotificationsExtensions.Win10.pdb",
+        "lib/dotnet/NotificationsExtensions.Win10.xml",
+        "lib/native/NotificationsExtensions.pdb",
+        "lib/native/NotificationsExtensions.pri",
+        "lib/native/NotificationsExtensions.winmd",
+        "lib/native/NotificationsExtensions.winmd.xml",
+        "lib/native/NotificationsExtensions.xml",
+        "lib/portable-net45+sl50+win+wpa81+wp80/NotificationsExtensions.Win10.dll",
+        "lib/portable-net45+sl50+win+wpa81+wp80/NotificationsExtensions.Win10.pdb",
+        "lib/portable-net45+sl50+win+wpa81+wp80/NotificationsExtensions.Win10.xml",
+        "lib/uap10.0/NotificationsExtensions.Win10.XML",
+        "lib/uap10.0/NotificationsExtensions.Win10.dll",
+        "lib/uap10.0/NotificationsExtensions.Win10.pdb"
       ]
     },
     "runtime.any.System.Private.DataContractSerialization/4.1.0": {

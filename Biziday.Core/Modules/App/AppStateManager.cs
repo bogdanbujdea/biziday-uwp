@@ -35,20 +35,17 @@ namespace Biziday.Core.Modules.App
         public async Task EnableBackgroundTask()
         {
             string name = "NewsTask";
-
-            //
-            // Must be the same entry point that is specified in the manifest.
-            //
+            foreach (var backgroundTask in BackgroundTaskRegistration.AllTasks)
+            {
+                if (backgroundTask.Value.Name == name)
+                {
+                    return;
+                }
+            }
             string taskEntryPoint = "Biziday.NewsTask.NewsBackgroundTask";
 
-            //
-            // A time trigger that repeats at 15-minute intervals.
-            //
             IBackgroundTrigger trigger = new TimeTrigger(15, false);
 
-            //
-            // Builds the background task.
-            //
             BackgroundTaskBuilder builder = new BackgroundTaskBuilder
             {
                 Name = name,
@@ -57,20 +54,11 @@ namespace Biziday.Core.Modules.App
 
             builder.SetTrigger(trigger);
 
-            //
-            // Registers the background task, and get back a BackgroundTaskRegistration object representing the registered task.
-            //
             var access = await BackgroundExecutionManager.RequestAccessAsync();
 
-            //abort if access isn't granted
             if (access == BackgroundAccessStatus.DeniedByUser || access == BackgroundAccessStatus.DeniedBySystemPolicy)
                 return;
-            BackgroundTaskRegistration task = builder.Register();
-            task.Completed += Task_Completed;            
-        }
-
-        private void Task_Completed(BackgroundTaskRegistration sender, BackgroundTaskCompletedEventArgs args)
-        {
+            builder.Register();            
         }
     }
 }

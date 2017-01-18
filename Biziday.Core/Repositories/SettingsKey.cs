@@ -3,6 +3,7 @@
     public enum SettingsKey
     {
         UserId,
-        AreaId
+        AreaId,
+        LastNewsId
     }
 }

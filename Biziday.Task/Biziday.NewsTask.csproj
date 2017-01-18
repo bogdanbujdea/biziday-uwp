@@ -111,6 +111,12 @@
     <Compile Include="NewsBackgroundTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Biziday.Core\Biziday.Core.csproj">
+      <Project>{7ab1dc18-9f65-4c5f-aaa5-7cafc2c3fc08}</Project>
+      <Name>Biziday.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
