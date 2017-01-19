@@ -4,6 +4,7 @@
     {
         UserId,
         AreaId,
-        LastNewsId
+        LastNewsId,
+        ToastNewsId
     }
 }

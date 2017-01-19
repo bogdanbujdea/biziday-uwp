@@ -66,11 +66,17 @@ namespace Biziday.UWP
             base.OnActivated(args);
             if (args.Kind == ActivationKind.ToastNotification && args is ToastNotificationActivatedEventArgs)
             {
-                var eventArgs = args as ToastNotificationActivatedEventArgs;
-                int id;
-                if (int.TryParse(eventArgs.Argument, out id))
-                {                    
+                var data = args as ToastNotificationActivatedEventArgs;
+                if (args.PreviousExecutionState != ApplicationExecutionState.Running)
+                {
+                    DisplayRootView<HomeView>(data.Argument);
+                    return;
                 }
+                var settingsRepository = IoC.Get<ISettingsRepository>();
+                settingsRepository.SetLocalData(SettingsKey.ToastNewsId, data.Argument);
+                var statisticsService = IoC.Get<IStatisticsService>();
+                statisticsService.RegisterEvent(EventCategory.AppEvent, "toast_activation", data.Argument);
+                DisplayRootView<HomeView>();
             }
         }
 

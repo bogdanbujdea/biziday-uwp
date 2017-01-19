@@ -2,7 +2,12 @@
 {
     public interface ISettingsRepository
     {
-        T GetData<T>(SettingsKey key);
-        void SetData(SettingsKey key, object value);
+        T GetLocalData<T>(SettingsKey key);
+
+        void SetLocalData(SettingsKey key, object value);
+
+        T GetRoamningData<T>(SettingsKey key);
+
+        void SetRoamningData(SettingsKey key, object value);
     }
 }

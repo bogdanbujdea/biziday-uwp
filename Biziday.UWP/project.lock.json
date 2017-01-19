@@ -13153,9 +13153,8 @@
       ]
     },
     "NotificationsExtensions.Win10/14332.0.2": {
-      "sha512": "BS6LVOkfVTvTZ503ZSt4vDD6sgbrNqAz2hZY0KxQ7UzMOaxm6GZl4v1CYQpiMcgLbKvtG4NtgZUaV+ptyz1CWA==",
+      "sha512": "UN5yNMpYIs06ULFSGkNYINN/ZtqK19wt3IbotUvH7rlGPVOcbvNvM2Jzxs9wZAolX97L5/Y4u+6twFP0oeXk2A==",
       "type": "package",
-      "path": "NotificationsExtensions.Win10/14332.0.2",
       "files": [
         "NotificationsExtensions.Win10.14332.0.2.nupkg.sha512",
         "NotificationsExtensions.Win10.nuspec",

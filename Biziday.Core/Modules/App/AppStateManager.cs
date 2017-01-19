@@ -25,13 +25,13 @@ namespace Biziday.Core.Modules.App
 
         public bool FirstTimeUse()
         {
-            var userId = _settingsRepository.GetData<int>(SettingsKey.UserId);
+            var userId = _settingsRepository.GetRoamningData<int>(SettingsKey.UserId);
             return userId == 0;
         }
 
         public bool LocationIsSelected()
         {
-            return _settingsRepository.GetData<int>(SettingsKey.AreaId) != 0;
+            return _settingsRepository.GetRoamningData<int>(SettingsKey.AreaId) != 0;
         }
 
         public async Task EnableBackgroundTask()

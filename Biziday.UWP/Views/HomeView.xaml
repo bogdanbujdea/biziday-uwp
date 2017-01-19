@@ -220,7 +220,7 @@
                     <Image x:Name="LocationPinImage" Source="../Assets/pin.png" Height="35" Margin="15 0" HorizontalAlignment="Left"></Image>
                     <TextBlock x:Name="LocationText" Text="Aplicatia iti va aduce si stiri de interes local. Alege-ti orasul!" Margin="15 0" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"></TextBlock>
                 </Grid>
-                <controls:MasterDetailsView x:Name="DetailsView" Grid.Row="1" Foreground="Black" Background="#EFEFEF" Margin="0 0"
+                <controls:MasterDetailsView x:Name="DetailsView" SelectedItem="{Binding SelectedNews, Mode=TwoWay}" Grid.Row="1" Foreground="Black" Background="#EFEFEF" Margin="0 0"
                                     ItemsSource="{Binding NewsItems, Mode=TwoWay}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
                     <controls:MasterDetailsView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
@@ -247,7 +247,7 @@
                     <controls:MasterDetailsView.DetailsTemplate>
                         <DataTemplate x:DataType="models:NewsItem">
                             <Grid>
-                                <WebView x:Name="Browser" Source="{Binding Link}" micro:Message.Attach="[Event NavigationStarting]=[Action LoadingPage];[Event DOMContentLoaded]=[Action PageLoaded]"></WebView>
+                                <WebView x:Name="Browser" Margin="0 0 15 0" Source="{Binding Link}" micro:Message.Attach="[Event NavigationStarting]=[Action LoadingPage];[Event DOMContentLoaded]=[Action PageLoaded]"></WebView>
                                 <Grid x:Name="LoadingGrid" Background="White" Visibility="{Binding ViewModel.PageIsLoading, ElementName=HomePage, Converter={StaticResource BooleanToVisibilityConverter}}"></Grid>
                                 <ProgressRing IsActive="{Binding ViewModel.PageIsLoading, ElementName=HomePage}" Height="150"></ProgressRing>
                             </Grid>

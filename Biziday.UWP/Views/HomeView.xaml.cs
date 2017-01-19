@@ -2,6 +2,7 @@
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 using Biziday.UWP.ViewModels;
 
 namespace Biziday.UWP.Views
@@ -22,6 +23,13 @@ namespace Biziday.UWP.Views
                 Grid.SetRowSpan(DetailsView, 2);
                 Grid.SetRow(DetailsView, 0);
             }
+        }
+
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            await Task.Delay(2000);
+            ViewModel.LoadNewsFromToast(e?.Parameter as string);            
         }
 
         public HomeViewModel ViewModel => DataContext as HomeViewModel;

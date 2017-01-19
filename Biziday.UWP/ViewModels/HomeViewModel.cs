@@ -10,6 +10,7 @@ using Biziday.Core.Modules.App.Analytics;
 using Biziday.Core.Modules.App.Dialogs;
 using Biziday.Core.Modules.App.Navigation;
 using Biziday.Core.Modules.News.Services;
+using Biziday.Core.Repositories;
 using Biziday.Core.Validation.Reports.Operation;
 using Caliburn.Micro;
 
@@ -22,6 +23,7 @@ namespace Biziday.UWP.ViewModels
         private readonly IPageNavigationService _pageNavigationService;
         private readonly IUserNotificationService _userNotificationService;
         private readonly IStatisticsService _statisticsService;
+        private readonly ISettingsRepository _settingsRepository;
         private IncrementalLoadingCollection<NewsItem, NewsRetriever> _newsItems;
         private bool _pageIsLoading;
         private bool _locationIsSelected;
@@ -30,15 +32,17 @@ namespace Biziday.UWP.ViewModels
         private string _searchText;
         private bool _searchIsEnabled;
         private List<NewsItem> _allNews;
+        private NewsItem _selectedNews;
 
         public HomeViewModel(INewsRetriever newsRetriever, IAppStateManager appStateManager,
-            IPageNavigationService pageNavigationService, IUserNotificationService userNotificationService, IStatisticsService statisticsService, IEventAggregator eventAggregator)
+            IPageNavigationService pageNavigationService, IUserNotificationService userNotificationService, IStatisticsService statisticsService, IEventAggregator eventAggregator, ISettingsRepository settingsRepository)
         {
             _newsRetriever = newsRetriever;
             _appStateManager = appStateManager;
             _pageNavigationService = pageNavigationService;
             _userNotificationService = userNotificationService;
             _statisticsService = statisticsService;
+            _settingsRepository = settingsRepository;
             eventAggregator.Subscribe(this);
         }
 
@@ -76,7 +80,19 @@ namespace Biziday.UWP.ViewModels
         {
             base.OnActivate();
             LocationIsSelected = _appStateManager.LocationIsSelected();
+            var stringId = _settingsRepository.GetLocalData<string>(SettingsKey.ToastNewsId);
+            LoadNewsFromToast(stringId);
             _statisticsService.RegisterPage("news");
+        }
+
+        public void LoadNewsFromToast(string stringId)
+        {
+            int id;
+            if (string.IsNullOrWhiteSpace(stringId) == false && int.TryParse(stringId, out id))
+            {
+                _settingsRepository.SetLocalData(SettingsKey.ToastNewsId, string.Empty);
+                SelectedNews = NewsItems.FirstOrDefault(n => n.Id == id);
+            }
         }
 
         public IncrementalLoadingCollection<NewsItem, NewsRetriever> NewsItems
@@ -202,6 +218,17 @@ namespace Biziday.UWP.ViewModels
                 if (value == _searchIsEnabled) return;
                 _searchIsEnabled = value;
                 NotifyOfPropertyChange(() => SearchIsEnabled);
+            }
+        }
+
+        public NewsItem SelectedNews
+        {
+            get { return _selectedNews; }
+            set
+            {
+                if (Equals(value, _selectedNews)) return;
+                _selectedNews = value;
+                NotifyOfPropertyChange(() => SelectedNews);
             }
         }
 

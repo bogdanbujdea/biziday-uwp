@@ -25,21 +25,21 @@ namespace Biziday.NewsTask
             var dataReport = await newsRetriever.RetrieveNews(1);
             if (dataReport.IsSuccessful)
             {
-                var previousNewsId = settingsRepository.GetData<int>(SettingsKey.LastNewsId);
+                var previousNewsId = settingsRepository.GetLocalData<int>(SettingsKey.LastNewsId);
                 var news = dataReport.Content.Data.ToList();
                 var lastNewsId = news.FirstOrDefault()?.Id;
-                ShowNotification(news, "last: " + lastNewsId + ", previous: " + previousNewsId);
                 if (lastNewsId != previousNewsId)
                 {
                     ShowNotification(news);
-                    settingsRepository.SetData(SettingsKey.LastNewsId, lastNewsId);
+                    settingsRepository.SetLocalData(SettingsKey.LastNewsId, lastNewsId);
                 }
             }
             deferral.Complete();
         }
 
-        private void ShowNotification(List<NewsItem> news, string s = "")
+        private void ShowNotification(List<NewsItem> news)
         {
+            var newsItem = news.FirstOrDefault();
             var content = new ToastContent
             {
                 Visual = new ToastVisual
@@ -52,11 +52,10 @@ namespace Biziday.NewsTask
                             Source = "ms-appx:///Assets/NewStoreLogo.scale-100.png"
                         }
                     }
-                }
+                },
+                Launch = newsItem.Id.ToString()
             };
-            if (string.IsNullOrWhiteSpace(s) == false)
-                content.Visual.BindingGeneric.Children.Add(new AdaptiveText { Text = s });
-            content.Visual.BindingGeneric.Children.Add(new AdaptiveText { Text = news.FirstOrDefault()?.Body });
+            content.Visual.BindingGeneric.Children.Add(new AdaptiveText { Text = newsItem.Body });
             Show(content);
         }
 

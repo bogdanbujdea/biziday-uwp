@@ -24,7 +24,8 @@ namespace Biziday.Core.Modules.News.Services
         private NewsPaginationInfo _paginationInfo;
         private bool _alreadyTriedToRegister;
 
-        public NewsRetriever(ISettingsRepository settingsRepository, IRestClient restClient, IStatisticsService statisticsService,
+        public NewsRetriever(ISettingsRepository settingsRepository, IRestClient restClient,
+            IStatisticsService statisticsService,
             IAppStateManager appStateManager)
         {
             _settingsRepository = settingsRepository;
@@ -87,9 +88,16 @@ namespace Biziday.Core.Modules.News.Services
 
         private void SaveLastId(IEnumerable<NewsItem> news)
         {
-            var id = news.FirstOrDefault()?.Id;
-            if (id != null)
-                _settingsRepository.SetData(SettingsKey.LastNewsId, 1234);
+            try
+            {
+                var id = news.FirstOrDefault()?.Id;
+                if (id != null)
+                    _settingsRepository.SetLocalData(SettingsKey.LastNewsId, id);
+            }
+            catch (Exception)
+            {
+                
+            }
         }
 
         private List<KeyValuePair<string, string>> CreateNewsPaginationInfo()
@@ -97,7 +105,7 @@ namespace Biziday.Core.Modules.News.Services
             var pairs = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("userId",
-                    _settingsRepository.GetData<int>(SettingsKey.UserId).ToString()),
+                    _settingsRepository.GetRoamningData<int>(SettingsKey.UserId).ToString()),
                 new KeyValuePair<string, string>("last_order_date", _paginationInfo.LastOrderDate.ToString()),
                 new KeyValuePair<string, string>("current_page", _paginationInfo.CurrentPage.ToString()),
                 new KeyValuePair<string, string>("per_page", _paginationInfo.PerPage.ToString())
@@ -118,7 +126,7 @@ namespace Biziday.Core.Modules.News.Services
             if (webReport.IsSuccessful)
             {
                 var registerResult = JsonConvert.DeserializeObject<RegisterResult>(webReport.StringResponse);
-                _settingsRepository.SetData(SettingsKey.UserId, registerResult.UserId);
+                _settingsRepository.SetRoamningData(SettingsKey.UserId, registerResult.UserId);
                 _statisticsService.RegisterEvent(EventCategory.UserEvent, "registration", registerResult.UserId.ToString());
             }
             _alreadyTriedToRegister = true;
