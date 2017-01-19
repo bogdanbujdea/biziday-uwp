@@ -89,7 +89,7 @@ namespace Biziday.Core.Modules.News.Services
         {
             var id = news.FirstOrDefault()?.Id;
             if (id != null)
-                _settingsRepository.SetData(SettingsKey.LastNewsId, id);
+                _settingsRepository.SetData(SettingsKey.LastNewsId, 1234);
         }
 
         private List<KeyValuePair<string, string>> CreateNewsPaginationInfo()

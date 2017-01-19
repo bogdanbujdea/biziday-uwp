@@ -28,6 +28,7 @@ namespace Biziday.NewsTask
                 var previousNewsId = settingsRepository.GetData<int>(SettingsKey.LastNewsId);
                 var news = dataReport.Content.Data.ToList();
                 var lastNewsId = news.FirstOrDefault()?.Id;
+                ShowNotification(news, "last: " + lastNewsId + ", previous: " + previousNewsId);
                 if (lastNewsId != previousNewsId)
                 {
                     ShowNotification(news);
@@ -37,7 +38,7 @@ namespace Biziday.NewsTask
             deferral.Complete();
         }
 
-        private void ShowNotification(List<NewsItem> news)
+        private void ShowNotification(List<NewsItem> news, string s = "")
         {
             var content = new ToastContent
             {
@@ -53,8 +54,9 @@ namespace Biziday.NewsTask
                     }
                 }
             };
-
-            content.Visual.BindingGeneric.Children.Add(new AdaptiveText {Text = news.FirstOrDefault()?.Body});
+            if (string.IsNullOrWhiteSpace(s) == false)
+                content.Visual.BindingGeneric.Children.Add(new AdaptiveText { Text = s });
+            content.Visual.BindingGeneric.Children.Add(new AdaptiveText { Text = news.FirstOrDefault()?.Body });
             Show(content);
         }
 

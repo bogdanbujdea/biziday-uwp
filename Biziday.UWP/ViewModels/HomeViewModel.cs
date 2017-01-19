@@ -25,6 +25,8 @@ namespace Biziday.UWP.ViewModels
         private bool _locationIsSelected;
         private string _errorMessage;
         private bool _isErrorVisible;
+        private string _searchText;
+        private bool _searchIsEnabled;
 
         public HomeViewModel(INewsRetriever newsRetriever, IAppStateManager appStateManager,
             IPageNavigationService pageNavigationService, IUserNotificationService userNotificationService, IStatisticsService statisticsService, IEventAggregator eventAggregator)
@@ -150,6 +152,28 @@ namespace Biziday.UWP.ViewModels
             }
         }
 
+        public string SearchText
+        {
+            get { return _searchText; }
+            set
+            {
+                if (value == _searchText) return;
+                _searchText = value;
+                NotifyOfPropertyChange(() => SearchText);
+            }
+        }
+
+        public bool SearchIsEnabled
+        {
+            get { return _searchIsEnabled; }
+            set
+            {
+                if (value == _searchIsEnabled) return;
+                _searchIsEnabled = value;
+                NotifyOfPropertyChange(() => SearchIsEnabled);
+            }
+        }
+
         public void SelectLocation()
         {
             _pageNavigationService.NavigateTo<LocationViewModel>();
@@ -165,6 +189,16 @@ namespace Biziday.UWP.ViewModels
         {
             PageIsLoading = false;
             _statisticsService.RegisterEvent(EventCategory.AppEvent, "news", "page_loaded");
+        }
+
+        public void SearchNews()
+        {
+            SearchIsEnabled = true;
+        }
+
+        public void HideSearch()
+        {
+            SearchIsEnabled = false;
         }
 
         public void Handle(LocationChangedEvent message)
