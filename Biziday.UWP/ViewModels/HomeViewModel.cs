@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Email;
 using Windows.System;
@@ -27,6 +29,7 @@ namespace Biziday.UWP.ViewModels
         private bool _isErrorVisible;
         private string _searchText;
         private bool _searchIsEnabled;
+        private List<NewsItem> _allNews;
 
         public HomeViewModel(INewsRetriever newsRetriever, IAppStateManager appStateManager,
             IPageNavigationService pageNavigationService, IUserNotificationService userNotificationService, IStatisticsService statisticsService, IEventAggregator eventAggregator)
@@ -55,7 +58,7 @@ namespace Biziday.UWP.ViewModels
                 }
                 else
                     LocationIsSelected = _appStateManager.LocationIsSelected();
-                NewsItems = new IncrementalLoadingCollection<NewsItem, NewsRetriever>(_newsRetriever as NewsRetriever);
+                ResetNews();
             }
             finally
             {
@@ -104,8 +107,13 @@ namespace Biziday.UWP.ViewModels
         public void RefreshNews()
         {
             _newsRetriever.Refresh();
-            NewsItems = new IncrementalLoadingCollection<NewsItem, NewsRetriever>(_newsRetriever as NewsRetriever);
+            ResetNews();
             IsErrorVisible = false;
+        }
+
+        private void ResetNews()
+        {
+            NewsItems = new IncrementalLoadingCollection<NewsItem, NewsRetriever>(_newsRetriever as NewsRetriever);
         }
 
         public bool PageIsLoading
@@ -159,7 +167,30 @@ namespace Biziday.UWP.ViewModels
             {
                 if (value == _searchText) return;
                 _searchText = value;
+                if (_searchText.Length >= 2)
+                {
+                    FilterNews();
+                }
+                else if (string.IsNullOrWhiteSpace(_searchText) && SearchIsEnabled)
+                {
+                    var newsRetriever = _newsRetriever as IncrementalItemSourceBase<NewsItem>;
+                    newsRetriever?.RaiseHasMoreItemsChanged(true);
+                }
                 NotifyOfPropertyChange(() => SearchText);
+            }
+        }
+
+        private void FilterNews()
+        {
+            var newsRetriever = _newsRetriever as IncrementalItemSourceBase<NewsItem>;
+            newsRetriever?.RaiseHasMoreItemsChanged(false);
+            var matchingNews = _allNews.Where(n => n.Body.ToLower().Contains(SearchText.ToLower())).ToList();
+            NewsItems.Clear();
+            if (matchingNews.Count == 0)
+                return;
+            foreach (var newsItem in matchingNews)
+            {
+                NewsItems.Add(newsItem);
             }
         }
 
@@ -194,11 +225,18 @@ namespace Biziday.UWP.ViewModels
         public void SearchNews()
         {
             SearchIsEnabled = true;
+            _allNews = NewsItems.ToList();
         }
 
         public void HideSearch()
         {
+            SearchText = string.Empty;
             SearchIsEnabled = false;
+            NewsItems.Clear();
+            foreach (var newsItem in _allNews)
+            {
+                NewsItems.Add(newsItem);
+            }
         }
 
         public void Handle(LocationChangedEvent message)

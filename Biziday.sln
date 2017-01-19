@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biziday.UWP", "Biziday.UWP\Biziday.UWP.csproj", "{788381EF-524B-43A5-9760-B3D2C5343A06}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B0A620E7-4D5C-4B05-A798-EE705912024B} = {B0A620E7-4D5C-4B05-A798-EE705912024B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Biziday.Core", "Biziday.Core\Biziday.Core.csproj", "{7AB1DC18-9F65-4C5F-AAA5-7CAFC2C3FC08}"
 EndProject

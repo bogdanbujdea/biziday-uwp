@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
+using Windows.UI.Popups;
 using Biziday.Core.Repositories;
 
 namespace Biziday.Core.Modules.App
@@ -37,11 +39,13 @@ namespace Biziday.Core.Modules.App
             string name = "NewsTask";
             foreach (var backgroundTask in BackgroundTaskRegistration.AllTasks)
             {
+                Debug.WriteLine("task: " + backgroundTask.Value.Name);
                 if (backgroundTask.Value.Name == name)
                 {
                     return;
                 }
             }
+            Debug.WriteLine("Registering new task");
             string taskEntryPoint = "Biziday.NewsTask.NewsBackgroundTask";
 
             IBackgroundTrigger trigger = new TimeTrigger(15, false);
@@ -57,7 +61,10 @@ namespace Biziday.Core.Modules.App
             var access = await BackgroundExecutionManager.RequestAccessAsync();
 
             if (access == BackgroundAccessStatus.DeniedByUser || access == BackgroundAccessStatus.DeniedBySystemPolicy)
+            {
+                await new MessageDialog("not registered: " + access.ToString()).ShowAsync();
                 return;
+            }
             builder.Register();            
         }
     }

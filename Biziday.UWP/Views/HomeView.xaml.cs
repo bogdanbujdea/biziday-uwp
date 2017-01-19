@@ -1,4 +1,5 @@
-﻿using Windows.UI.ViewManagement;
+﻿using System.Threading.Tasks;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Biziday.UWP.ViewModels;
@@ -28,6 +29,12 @@ namespace Biziday.UWP.Views
         private void SelectLocation(object sender, RoutedEventArgs e)
         {
             ViewModel.SelectLocation();
+        }
+
+        private async void OpenSearch(object sender, RoutedEventArgs e)
+        {
+            await Task.Delay(100);
+            SearchText.Focus(FocusState.Programmatic);
         }
     }
 }

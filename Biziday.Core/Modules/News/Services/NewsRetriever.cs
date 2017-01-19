@@ -109,7 +109,12 @@ namespace Biziday.Core.Modules.News.Services
         {
             var registrationData = new List<KeyValuePair<string, string>>();
             registrationData.Add(new KeyValuePair<string, string>("deviceType", "Windows tablet"));
-            var webReport = await _restClient.PostAsync(ApiEndpoints.RegisterUrl, registrationData);
+            BasicWebReport webReport;
+#if DEBUG
+            webReport = new BasicWebReport { IsSuccessful = true, StringResponse = JsonConvert.SerializeObject(new RegisterResult { Result = 0, UserId = 112345 }) };
+#else
+            webReport = await _restClient.PostAsync(ApiEndpoints.RegisterUrl, registrationData);
+#endif
             if (webReport.IsSuccessful)
             {
                 var registerResult = JsonConvert.DeserializeObject<RegisterResult>(webReport.StringResponse);

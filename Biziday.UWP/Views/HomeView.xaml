@@ -167,7 +167,7 @@
                 <Grid/>
             </CommandBar.Content>
             <AppBarButton Icon="Refresh" Label="Refresh" micro:Message.Attach="[Event Click]=[Action RefreshNews]"/>
-            <AppBarButton Icon="find" Label="Cauta" micro:Message.Attach="[Event Click]=[Action SearchNews]"/>
+            <AppBarButton Icon="find" Label="Cauta" micro:Message.Attach="[Event Click]=[Action SearchNews]" Click="OpenSearch"/>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Name="Rating" Label="Ofera un rating" micro:Message.Attach="[Event Click]=[Action SetRating]"/>
                 <AppBarButton Name="Feedback" Label="Ofera feedback" micro:Message.Attach="[Event Click]=[Action SendFeedback]"/>
@@ -208,7 +208,7 @@
             <Grid Background="{StaticResource BizidayBlue}">
                 <TextBlock x:Name="AppName" HorizontalAlignment="Center" FontSize="30" Text="BIZIDAY" Foreground="White" FontWeight="SemiBold"></TextBlock>
                 <Grid x:Name="SearchGrid" Background="{StaticResource BizidayBlue}" Visibility="{Binding SearchIsEnabled, Mode=TwoWay, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <TextBox PlaceholderText="Cauta..." Width="250" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" FontSize="18" Padding="3 0" Height="30" Margin="15 5 15 0" BorderThickness="0" Style="{StaticResource SearchTextStyle}"></TextBox>
+                    <TextBox x:Name="SearchText" PlaceholderText="Cauta..." Width="250"  Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" FontSize="18" Padding="3 0" Height="30" Margin="15 5 15 0" BorderThickness="0" Style="{StaticResource SearchTextStyle}"></TextBox>
                 </Grid>
             </Grid>
             <Grid Grid.Row="1">
