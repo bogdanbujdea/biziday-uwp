@@ -64,7 +64,7 @@ namespace Biziday.UWP.ViewModels
 
         private void SetPreviousChoice()
         {
-            var areaId = _settingsRepository.GetData<int>(SettingsKey.AreaId);
+            var areaId = _settingsRepository.GetRoamningData<int>(SettingsKey.AreaId);
             if (areaId != 0)
             {
                 var state = Areas.FirstOrDefault(a => a.Id == areaId);
@@ -165,7 +165,7 @@ namespace Biziday.UWP.ViewModels
                 MoldovaIsChecked = false;
                 EuropeIsChecked = false;
                 OtherIsChecked = false;
-                _settingsRepository.SetData(SettingsKey.AreaId, area.Id);
+                _settingsRepository.SetRoamningData(SettingsKey.AreaId, area.Id);
                 NotifyOfPropertyChange(() => SelectedArea);
             }
         }
@@ -182,7 +182,7 @@ namespace Biziday.UWP.ViewModels
                 }
                 else
                 {
-                    _settingsRepository.SetData(SettingsKey.AreaId, areaId);
+                    _settingsRepository.SetRoamningData(SettingsKey.AreaId, areaId);
                     _eventAggregator.PublishOnUIThread(new LocationChangedEvent());
                     LogNewLocation(areaId);
                 }

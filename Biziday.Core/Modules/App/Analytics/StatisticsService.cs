@@ -13,7 +13,7 @@ namespace Biziday.Core.Modules.App.Analytics
         {
             try
             {
-                GoogleAnalytics.EasyTracker.GetTracker().SendView(page);
+                GoogleAnalytics.EasyTracker.GetTracker().SendView(page);                
             }
             catch (Exception)
             {

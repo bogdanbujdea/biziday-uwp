@@ -9,6 +9,7 @@ using Biziday.Core.Modules.App;
 using Biziday.Core.Modules.App.Analytics;
 using Biziday.Core.Modules.News.Models;
 using Biziday.Core.Repositories;
+using Biziday.Core.Validation.Reports.Operation;
 using Biziday.Core.Validation.Reports.Web;
 using Newtonsoft.Json;
 
@@ -21,8 +22,10 @@ namespace Biziday.Core.Modules.News.Services
         private readonly IStatisticsService _statisticsService;
         private readonly IAppStateManager _appStateManager;
         private NewsPaginationInfo _paginationInfo;
+        private bool _alreadyTriedToRegister;
 
-        public NewsRetriever(ISettingsRepository settingsRepository, IRestClient restClient, IStatisticsService statisticsService,
+        public NewsRetriever(ISettingsRepository settingsRepository, IRestClient restClient,
+            IStatisticsService statisticsService,
             IAppStateManager appStateManager)
         {
             _settingsRepository = settingsRepository;
@@ -67,6 +70,7 @@ namespace Biziday.Core.Modules.News.Services
                     else
                         _paginationInfo.LastOrderDate = result.NewsInfo.LastOrderDate.GetValueOrDefault();
                     report.IsSuccessful = true;
+                    SaveLastId(result.NewsInfo.Data);
                 }
                 else
                 {
@@ -77,8 +81,23 @@ namespace Biziday.Core.Modules.News.Services
             {
                 report.ErrorMessage = exception.Message;
             }
+            if (report.IsSuccessful == false)
+                OnErrorOccurred(report);
             return report;
+        }
 
+        private void SaveLastId(IEnumerable<NewsItem> news)
+        {
+            try
+            {
+                var id = news.FirstOrDefault()?.Id;
+                if (id != null)
+                    _settingsRepository.SetLocalData(SettingsKey.LastNewsId, id);
+            }
+            catch (Exception)
+            {
+                
+            }
         }
 
         private List<KeyValuePair<string, string>> CreateNewsPaginationInfo()
@@ -86,7 +105,7 @@ namespace Biziday.Core.Modules.News.Services
             var pairs = new List<KeyValuePair<string, string>>
             {
                 new KeyValuePair<string, string>("userId",
-                    _settingsRepository.GetData<int>(SettingsKey.UserId).ToString()),
+                    _settingsRepository.GetRoamningData<int>(SettingsKey.UserId).ToString()),
                 new KeyValuePair<string, string>("last_order_date", _paginationInfo.LastOrderDate.ToString()),
                 new KeyValuePair<string, string>("current_page", _paginationInfo.CurrentPage.ToString()),
                 new KeyValuePair<string, string>("per_page", _paginationInfo.PerPage.ToString())
@@ -98,17 +117,24 @@ namespace Biziday.Core.Modules.News.Services
         {
             var registrationData = new List<KeyValuePair<string, string>>();
             registrationData.Add(new KeyValuePair<string, string>("deviceType", "Windows tablet"));
-            var webReport = await _restClient.PostAsync(ApiEndpoints.RegisterUrl, registrationData);
+            BasicWebReport webReport;
+#if DEBUG
+            webReport = new BasicWebReport { IsSuccessful = true, StringResponse = JsonConvert.SerializeObject(new RegisterResult { Result = 0, UserId = 112345 }) };
+#else
+            webReport = await _restClient.PostAsync(ApiEndpoints.RegisterUrl, registrationData);
+#endif
             if (webReport.IsSuccessful)
             {
                 var registerResult = JsonConvert.DeserializeObject<RegisterResult>(webReport.StringResponse);
-                _settingsRepository.SetData(SettingsKey.UserId, registerResult.UserId);
+                _settingsRepository.SetRoamningData(SettingsKey.UserId, registerResult.UserId);
                 _statisticsService.RegisterEvent(EventCategory.UserEvent, "registration", registerResult.UserId.ToString());
             }
+            _alreadyTriedToRegister = true;
         }
 
         public override async Task LoadMoreItemsAsync(ICollection<NewsItem> collection, uint suggestLoadCount)
         {
+            SaveLastId(collection);
             var downloadReport = await GetNews(_paginationInfo.CurrentPage + 1);
             if (downloadReport.IsSuccessful)
             {
@@ -122,6 +148,11 @@ namespace Biziday.Core.Modules.News.Services
                     }
                 }
             }
+            else if (downloadReport.ErrorMessage == "Please specify userId" && _alreadyTriedToRegister == false)
+            {
+                await RegisterUser();
+                await LoadMoreItemsAsync(collection, suggestLoadCount);
+            }
         }
 
         public void Refresh()
@@ -132,6 +163,13 @@ namespace Biziday.Core.Modules.News.Services
                 CurrentPage = 0,
                 LastOrderDate = 0
             };
+        }
+
+        public event EventHandler<BasicReport> ErrorOccurred;
+
+        protected virtual void OnErrorOccurred(BasicReport e)
+        {
+            ErrorOccurred?.Invoke(this, e);
         }
     }
 }

@@ -17,7 +17,7 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <PackageCertificateKeyFile>Biziday.UWP_StoreKey.pfx</PackageCertificateKeyFile>
-    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <PackageCertificateThumbprint>521F4359D298A3F26386E3029D5580E2B54F2042</PackageCertificateThumbprint>
     <AppxBundle>Always</AppxBundle>
@@ -162,6 +162,7 @@
     <Content Include="Assets\Square71x71Logo.scale-150.png" />
     <Content Include="Assets\Square71x71Logo.scale-200.png" />
     <Content Include="Assets\Square71x71Logo.scale-400.png" />
+    <Content Include="Assets\tile.png" />
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-125.png" />
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
@@ -199,6 +200,10 @@
     <ProjectReference Include="..\Biziday.Core\Biziday.Core.csproj">
       <Project>{7AB1DC18-9F65-4C5F-AAA5-7CAFC2C3FC08}</Project>
       <Name>Biziday.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Biziday.Task\Biziday.NewsTask.csproj">
+      <Project>{b0a620e7-4d5c-4b05-a798-ee705912024b}</Project>
+      <Name>Biziday.NewsTask</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

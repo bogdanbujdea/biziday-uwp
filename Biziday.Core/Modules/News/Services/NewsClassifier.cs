@@ -45,7 +45,7 @@ namespace Biziday.Core.Modules.News.Services
 
         public async Task<BasicWebReport> SelectArea(int areaId)
         {
-            var userId = _settingsRepository.GetData<int>(SettingsKey.UserId);
+            var userId = _settingsRepository.GetRoamningData<int>(SettingsKey.UserId);
             var content = new AreaConfiguration { Areas = new List<int>() { areaId }, UserId = userId };
             return await _restClient.PostJsonAsync(content, ApiEndpoints.SelectAreaURL);
         }

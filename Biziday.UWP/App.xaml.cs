@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
@@ -57,6 +59,25 @@ namespace Biziday.UWP
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
             DisplayRootView<HomeView>();
+        }
+
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            base.OnActivated(args);
+            if (args.Kind == ActivationKind.ToastNotification && args is ToastNotificationActivatedEventArgs)
+            {
+                var data = args as ToastNotificationActivatedEventArgs;
+                if (args.PreviousExecutionState != ApplicationExecutionState.Running)
+                {
+                    DisplayRootView<HomeView>(data.Argument);
+                    return;
+                }
+                var settingsRepository = IoC.Get<ISettingsRepository>();
+                settingsRepository.SetLocalData(SettingsKey.ToastNewsId, data.Argument);
+                var statisticsService = IoC.Get<IStatisticsService>();
+                statisticsService.RegisterEvent(EventCategory.AppEvent, "toast_activation", data.Argument);
+                DisplayRootView<HomeView>();
+            }
         }
 
         protected override object GetInstance(Type service, string key)

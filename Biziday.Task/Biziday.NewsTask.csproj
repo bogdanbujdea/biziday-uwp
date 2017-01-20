@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7AB1DC18-9F65-4C5F-AAA5-7CAFC2C3FC08}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{B0A620E7-4D5C-4B05-A798-EE705912024B}</ProjectGuid>
+    <OutputType>winmdobj</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Biziday.Core</RootNamespace>
-    <AssemblyName>Biziday.Core</AssemblyName>
+    <RootNamespace>Biziday.NewsTask</RootNamespace>
+    <AssemblyName>Biziday.NewsTask</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
@@ -16,6 +16,7 @@
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <AllowCrossPlatformRetargeting>false</AllowCrossPlatformRetargeting>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -107,50 +108,14 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Communication\ApiEndpoints.cs" />
-    <Compile Include="Communication\IRestClient.cs" />
-    <Compile Include="Communication\RestClient.cs" />
-    <Compile Include="Models\NewsItem.cs" />
-    <Compile Include="Models\NewsResponse.cs" />
-    <Compile Include="Models\Response.cs" />
-    <Compile Include="Modules\App\Analytics\IStatisticsService.cs" />
-    <Compile Include="Modules\App\Analytics\StatisticsService.cs" />
-    <Compile Include="Modules\App\AppStateManager.cs" />
-    <Compile Include="Modules\App\Controls\ExtendedComboBox.cs" />
-    <Compile Include="Modules\App\Converters\NewsTypeToBackgroundColor.cs" />
-    <Compile Include="Modules\App\Converters\ReversedBooleanToVisibilityConverter.cs" />
-    <Compile Include="Modules\App\Converters\TimestampToDateConverter.cs" />
-    <Compile Include="Modules\App\Converters\UrlToWebsiteNameConverter.cs" />
-    <Compile Include="Modules\App\Dialogs\IUserNotificationService.cs" />
-    <Compile Include="Modules\App\Dialogs\Option.cs" />
-    <Compile Include="Modules\App\Dialogs\UserNotificationService.cs" />
-    <Compile Include="Modules\App\HelperExtensions.cs" />
-    <Compile Include="Modules\App\LocationChangedEvent.cs" />
-    <Compile Include="Modules\App\Navigation\IPageNavigationService.cs" />
-    <Compile Include="Modules\App\Navigation\NavigationKey.cs" />
-    <Compile Include="Modules\App\Navigation\PageNavigationService.cs" />
-    <Compile Include="Modules\News\Models\Area.cs" />
-    <Compile Include="Modules\News\Models\AreasResponse.cs" />
-    <Compile Include="Modules\News\Models\NewsType.cs" />
-    <Compile Include="Modules\News\Models\RegisterResult.cs" />
-    <Compile Include="Modules\News\Services\AreaConfiguration.cs" />
-    <Compile Include="Modules\News\Services\IncrementalItemSourceBase.cs" />
-    <Compile Include="Modules\News\Services\IncrementalLoadingCollection.cs" />
-    <Compile Include="Modules\News\Services\INewsClassifier.cs" />
-    <Compile Include="Modules\News\Services\INewsRetriever.cs" />
-    <Compile Include="Modules\News\Services\NewsClassifier.cs" />
-    <Compile Include="Modules\News\Services\NewsPaginationInfo.cs" />
-    <Compile Include="Modules\News\Services\NewsRetriever.cs" />
+    <Compile Include="NewsBackgroundTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\ISettingsRepository.cs" />
-    <Compile Include="Repositories\SettingsKey.cs" />
-    <Compile Include="Repositories\SettingsRepository.cs" />
-    <Compile Include="Validation\Reports\Operation\BasicReport.cs" />
-    <Compile Include="Validation\Reports\Operation\ValidationReport.cs" />
-    <Compile Include="Validation\Reports\Web\BasicWebReport.cs" />
-    <Compile Include="Validation\Reports\Web\RequestStatus.cs" />
-    <Compile Include="Validation\Reports\Web\WebDataReport.cs" />
-    <EmbeddedResource Include="Properties\Biziday.Core.rd.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Biziday.Core\Biziday.Core.csproj">
+      <Project>{7ab1dc18-9f65-4c5f-aaa5-7cafc2c3fc08}</Project>
+      <Name>Biziday.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -12,6 +12,32 @@
     d:DataContext="{d:DesignData viewModels:LocationViewModel}">
 
     <Grid Background="White">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="VisualStateGroup">
+                <VisualState x:Name="WidthStates">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger x:Name="LowestWidthTrigger"
+                                         MinWindowWidth="300"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="StateText.Width" Value="300"></Setter>
+                        <Setter Target="Areas.FontSize" Value="14"></Setter>
+                        <Setter Target="Areas.Height" Value="65"></Setter>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NormalWidth">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger x:Name="NormalWidthTrigger"
+                                         MinWindowWidth="700"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="StateText.Width" Value="700"></Setter>
+                        <Setter Target="Areas.FontSize" Value="16"></Setter>
+                        <Setter Target="Areas.Height" Value="65"></Setter>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
         <ScrollViewer>
             <Grid>
                 <Grid.RowDefinitions>
@@ -21,7 +47,7 @@
                 <Grid Background="{StaticResource BizidayBlue}">
                     <TextBlock HorizontalAlignment="Center" FontSize="30" Text="BIZIDAY" Foreground="White" FontWeight="SemiBold"></TextBlock>
                 </Grid>
-                <Grid Grid.Row="1" Margin="30 10">
+                <Grid Grid.Row="1" Margin="15 10 0 0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="65"></RowDefinition>
                         <RowDefinition Height="65"></RowDefinition>
@@ -30,7 +56,7 @@
                         <RowDefinition Height="65"></RowDefinition>
                         <RowDefinition Height="65"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Margin="0 0" FontSize="14" Text="Alege judetul din care o sa primesti stiri locale" VerticalAlignment="Center"></TextBlock>
+                    <TextBlock x:Name="StateText" TextWrapping="Wrap" Margin="0 0" HorizontalAlignment="Left" FontSize="14" Text="Alege judetul din care o sa primesti stiri locale" VerticalAlignment="Center"></TextBlock>
                     <controls:ExtendedComboBox x:Name="Areas" Grid.Row="1" Header="Judetul" PlaceholderText="Selecteaza" MinWidth="250" >
                         <controls:ExtendedComboBox.ItemTemplate>
                             <DataTemplate>
