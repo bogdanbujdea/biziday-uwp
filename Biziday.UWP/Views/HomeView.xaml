@@ -247,7 +247,7 @@
                     <controls:MasterDetailsView.DetailsTemplate>
                         <DataTemplate x:DataType="models:NewsItem">
                             <Grid>
-                                <WebView x:Name="Browser" Margin="0 0 15 0" Source="{Binding Link}" micro:Message.Attach="[Event NavigationStarting]=[Action LoadingPage];[Event DOMContentLoaded]=[Action PageLoaded]"></WebView>
+                                <WebView x:Name="Browser" Source="{Binding Link}" micro:Message.Attach="[Event NavigationStarting]=[Action LoadingPage];[Event DOMContentLoaded]=[Action PageLoaded]"></WebView>
                                 <Grid x:Name="LoadingGrid" Background="White" Visibility="{Binding ViewModel.PageIsLoading, ElementName=HomePage, Converter={StaticResource BooleanToVisibilityConverter}}"></Grid>
                                 <ProgressRing IsActive="{Binding ViewModel.PageIsLoading, ElementName=HomePage}" Height="150"></ProgressRing>
                             </Grid>
